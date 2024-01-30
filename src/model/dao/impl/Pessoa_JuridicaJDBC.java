@@ -53,18 +53,9 @@ public class Pessoa_JuridicaJDBC implements Pessoa_JuridicaDao {
 			st.setInt(1, id);
 			rs = st.executeQuery();
 			if (rs.next()) {
-				Cliente cliente = new Cliente();
-				cliente.setId(rs.getInt("id"));
-				cliente.setNome(rs.getString("nome"));
-				cliente.setEmail(rs.getString("email"));
-				cliente.setTelefone(rs.getString("telefone"));
-				cliente.setEndereco(rs.getString("endereco"));
+				Cliente cliente = instantiateCliente(rs);
 				
-				Pessoa_Juridica obj = new Pessoa_Juridica();
-				obj.setId(rs.getInt("id"));
-				obj.setNome_fantasia("nome_Fantasia");
-				obj.setCnpj(rs.getString("cnpj"));
-				obj.setCliente_Id(cliente);
+				Pessoa_Juridica obj = instantiatePessoa_Juridica(rs, cliente);
 				return obj;
 			}
 			return null;
@@ -76,6 +67,25 @@ public class Pessoa_JuridicaJDBC implements Pessoa_JuridicaDao {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}
+	}
+
+	private Pessoa_Juridica instantiatePessoa_Juridica(ResultSet rs, Cliente cliente) throws SQLException {
+		Pessoa_Juridica obj = new Pessoa_Juridica();
+		obj.setId(rs.getInt("id"));
+		obj.setNome_fantasia("nome_Fantasia");
+		obj.setCnpj(rs.getString("cnpj"));
+		obj.setCliente_Id(cliente);
+		return obj;
+	}
+
+	private Cliente instantiateCliente(ResultSet rs) throws SQLException {
+		Cliente cliente =new Cliente();
+		cliente.setId(rs.getInt("id"));
+		cliente.setNome(rs.getString("nome"));
+		cliente.setEmail(rs.getString("email"));
+		cliente.setTelefone(rs.getString("telefone"));
+		cliente.setEndereco(rs.getString("endereco"));
+		return cliente;
 	}
 
 	@Override

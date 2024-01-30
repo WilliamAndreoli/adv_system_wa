@@ -14,6 +14,7 @@ public class Test {
 		
 		Pessoa_JuridicaDao p_JDao = DaoFactory.createPessoa_JuridicaDao();
 		
+		System.out.println("=== TEST 1: findById =====");
 		Pessoa_Fisica p_F = p_FDao.findById(1);
 		
 		Pessoa_Juridica p_J = p_JDao.findById(1);

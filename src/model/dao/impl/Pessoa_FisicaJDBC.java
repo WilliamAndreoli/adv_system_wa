@@ -53,21 +53,9 @@ public class Pessoa_FisicaJDBC implements Pessoa_FisicaDao {
 			st.setInt(1, id);
 			rs = st.executeQuery();
 			if (rs.next()) {
-				Cliente cliente = new Cliente();
-				cliente.setId(rs.getInt("id"));
-				cliente.setNome(rs.getString("nome"));
-				cliente.setEmail(rs.getString("email"));
-				cliente.setTelefone(rs.getString("telefone"));
-				cliente.setEndereco(rs.getString("endereco"));
+				Cliente cliente = instantiateCliente(rs);
 				
-				Pessoa_Fisica obj = new Pessoa_Fisica();
-				obj.setId(rs.getInt("id"));
-				obj.setCpf(rs.getString("cpf"));
-				obj.setRg(rs.getString("rg"));
-				obj.setCertidao_Casamento(rs.getString("certidao_Casamento"));
-				obj.setCtps(rs.getString("ctps"));
-				obj.setCnh(rs.getString("cnh"));
-				obj.setCliente_Id(cliente);
+				Pessoa_Fisica obj = instantiatePessoa_Fisica(rs, cliente);
 				return obj;
 			}
 			return null;
@@ -83,6 +71,28 @@ public class Pessoa_FisicaJDBC implements Pessoa_FisicaDao {
 		
 		
 		
+	}
+
+	private Pessoa_Fisica instantiatePessoa_Fisica(ResultSet rs, Cliente cliente) throws SQLException {
+		Pessoa_Fisica obj = new Pessoa_Fisica();
+		obj.setId(rs.getInt("id"));
+		obj.setCpf(rs.getString("cpf"));
+		obj.setRg(rs.getString("rg"));
+		obj.setCertidao_Casamento(rs.getString("certidao_Casamento"));
+		obj.setCtps(rs.getString("ctps"));
+		obj.setCnh(rs.getString("cnh"));
+		obj.setCliente_Id(cliente);
+		return obj;
+	}
+
+	private Cliente instantiateCliente(ResultSet rs) throws SQLException {
+		Cliente cliente = new Cliente();
+		cliente.setId(rs.getInt("id"));
+		cliente.setNome(rs.getString("nome"));
+		cliente.setEmail(rs.getString("email"));
+		cliente.setTelefone(rs.getString("telefone"));
+		cliente.setEndereco(rs.getString("endereco"));
+		return cliente;
 	}
 
 	@Override
