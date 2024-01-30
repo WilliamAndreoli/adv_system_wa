@@ -6,11 +6,11 @@ import java.util.Objects;
 public class Cliente implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private Integer id;
-	private String nome;
-	private String email;
-	private String telefone;
-	private String endereco;
+	protected Integer id;
+	protected String nome;
+	protected String email;
+	protected String telefone;
+	protected String endereco;
 	
 	public Cliente() {
 	}
@@ -81,10 +81,6 @@ public class Cliente implements Serializable {
 		return Objects.equals(id, other.id);
 	}
 
-	@Override
-	public String toString() {
-		return "Cliente [id=" + id + ", nome=" + nome + ", email=" + email + ", telefone=" + telefone + ", endereco="
-				+ endereco + "]";
-	}
+	
 	
 }
