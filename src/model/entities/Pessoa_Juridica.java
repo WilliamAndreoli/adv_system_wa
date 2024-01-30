@@ -9,6 +9,8 @@ public class Pessoa_Juridica extends Cliente{
 	private String nome_fantasia;
 	private String cnpj;
 	
+	private Cliente cliente_Id;
+	
 	public Pessoa_Juridica() {
 	}
 
@@ -41,6 +43,14 @@ public class Pessoa_Juridica extends Cliente{
 	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
 	}
+	
+	public Cliente getCliente_Id() {
+		return cliente_Id;
+	}
+	
+	public void setCliente_Id(Cliente cliente_Id) {
+		this.cliente_Id = cliente_Id;
+	}
 
 	@Override
 	public int hashCode() {
@@ -64,7 +74,7 @@ public class Pessoa_Juridica extends Cliente{
 
 	@Override
 	public String toString() {
-		return "Pessoa_Juridica [id=" + id + ", nome_fantasia=" + nome_fantasia + ", cnpj=" + cnpj + "]";
+		return "Pessoa_Juridica [id=" + id + ", nome_fantasia=" + nome_fantasia + ", cnpj=" + cnpj + ", cliente="+ cliente_Id +"]";
 	}
 	
 	

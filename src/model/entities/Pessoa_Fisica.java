@@ -8,29 +8,56 @@ public class Pessoa_Fisica extends Cliente {
 	private Integer id;
 	private String cpf;
 	private String rg;
-	private String certidao_nascimento;
+	private String certidao_Casamento;
 	private String ctps;
 	private String cnh;
+	
+	private Cliente cliente_Id;
 	
 	public Pessoa_Fisica() {
 	}
 
-	public Pessoa_Fisica(Integer id, String nome, String email, String telefone, String endereco, String cpf, String rg, String certidao_nascimento, String ctps, String cnh) {
+	public Pessoa_Fisica(Integer id, String nome, String email, String telefone, String endereco, String cpf, String rg, String certidao_Casamento, String ctps, String cnh, Cliente cliente_Id) {
 		super(id, nome, email, telefone, endereco);
 		this.id = id;
 		this.cpf = cpf;
 		this.rg = rg;
-		this.certidao_nascimento = certidao_nascimento;
+		this.certidao_Casamento = certidao_Casamento;
 		this.ctps = ctps;
 		this.cnh = cnh;
+		this.cliente_Id = cliente_Id;
 	}
-
+	
 	public Integer getId() {
 		return id;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	
+	public String getNome() {
+		return super.nome;
+	}
+	
+	public void setNome(String nome) {
+		super.nome = nome;
+	}
+	
+	public String getEmail() {
+		return super.email;
+	}
+	
+	public void setEmail(String email) {
+		super.email = email;
+	}
+	
+	public String getTeledone() {
+		return super.telefone;
+	}
+	
+	public void setTelefone(String telefone) {
+		super.telefone = telefone;
 	}
 
 	public String getCpf() {
@@ -49,12 +76,12 @@ public class Pessoa_Fisica extends Cliente {
 		this.rg = rg;
 	}
 
-	public String getCertidao_nascimento() {
-		return certidao_nascimento;
+	public String getCertidao_Casamento() {
+		return certidao_Casamento;
 	}
 
-	public void setCertidao_nascimento(String certidao_nascimento) {
-		this.certidao_nascimento = certidao_nascimento;
+	public void setCertidao_Casamento(String certidao_Casamento) {
+		this.certidao_Casamento = certidao_Casamento;
 	}
 
 	public String getCtps() {
@@ -71,6 +98,14 @@ public class Pessoa_Fisica extends Cliente {
 
 	public void setCnh(String cnh) {
 		this.cnh = cnh;
+	}
+	
+	public Cliente getCliente_Id() {
+		return cliente_Id;
+	}
+
+	public void setCliente_Id(Cliente cliente_Id) {
+		this.cliente_Id = cliente_Id;
 	}
 
 	@Override
@@ -92,8 +127,8 @@ public class Pessoa_Fisica extends Cliente {
 
 	@Override
 	public String toString() {
-		return "Pessoa_Fisica [id=" + id + ", cpf=" + cpf + ", rg=" + rg + ", certidao_nascimento="
-				+ certidao_nascimento + ", ctps=" + ctps + ", cnh=" + cnh + "]";
+		return "Pessoa_Fisica [id=" + id + ", cpf=" + cpf + ", rg=" + rg + ", certidao_Casamento="
+				+ certidao_Casamento + ", ctps=" + ctps + ", cnh=" + cnh + ", cliente="+ cliente_Id +"]";
 	}
 
 	
