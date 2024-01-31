@@ -5,14 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import db.DB;
 import db.DbException;
 import model.dao.UsuarioDao;
-import model.entities.Cliente;
 import model.entities.Usuario;
 
 public class UsuarioJDBC implements UsuarioDao {
@@ -47,18 +44,14 @@ public class UsuarioJDBC implements UsuarioDao {
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-				    "SELECT pessoa_fisica.*, cliente.nome as Nome, "
-				    + "cliente.email as Email, cliente.telefone as Telefone, cliente.endereco as Endereco "
-				    + "FROM pessoa_fisica INNER JOIN cliente "
-				    + "ON pessoa_fisica.cliente_Id = cliente.id "
-				    + "WHERE pessoa_fisica.id = ?");
+				    "SELECT usuario.* "
+				    + "FROM usuario "
+				    + "WHERE usuario.id = ?");
 			
 			st.setInt(1, id);
 			rs = st.executeQuery();
 			if (rs.next()) {
-				Cliente cliente = instantiateCliente(rs);
-				
-				Usuario obj = instantiateUsuario(rs, cliente);
+				Usuario obj = instantiateUsuario(rs);
 				return obj;
 			}
 			return null;
@@ -70,32 +63,14 @@ public class UsuarioJDBC implements UsuarioDao {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}
-		
-		
-		
-		
 	}
 
-	private Usuario instantiateUsuario(ResultSet rs, Cliente cliente) throws SQLException {
+	private Usuario instantiateUsuario(ResultSet rs) throws SQLException {
 		Usuario obj = new Usuario();
 		obj.setId(rs.getInt("id"));
-		obj.setCpf(rs.getString("cpf"));
-		obj.setRg(rs.getString("rg"));
-		obj.setCertidao_Casamento(rs.getString("certidao_Casamento"));
-		obj.setCtps(rs.getString("ctps"));
-		obj.setCnh(rs.getString("cnh"));
-		obj.setCliente_Id(cliente);
+		obj.setLogin(rs.getString("login"));
+		obj.setSenha(rs.getString("senha"));
 		return obj;
-	}
-
-	private Cliente instantiateCliente(ResultSet rs) throws SQLException {
-		Cliente cliente = new Cliente();
-		cliente.setId(rs.getInt("id"));
-		cliente.setNome(rs.getString("nome"));
-		cliente.setEmail(rs.getString("email"));
-		cliente.setTelefone(rs.getString("telefone"));
-		cliente.setEndereco(rs.getString("endereco"));
-		return cliente;
 	}
 
 	@Override
@@ -104,28 +79,16 @@ public class UsuarioJDBC implements UsuarioDao {
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-				    "SELECT pessoa_fisica.*, cliente.nome as Nome, cliente.email as Email, "
-				    + "cliente.telefone as Telefone, cliente.endereco as Endereco "
-				    + "FROM pessoa_fisica INNER JOIN cliente "
-				    + "ON pessoa_fisica.cliente_Id = cliente.id "
-				    + "ORDER BY Nome");
+				    "SELECT usuario.*"
+				    + "FROM usuario "
+				    + "ORDER BY login");
 
-		
 			rs = st.executeQuery();
 			
 			List<Usuario> list = new ArrayList<>();
-			Map<Integer, Cliente> map = new HashMap<>();
 			
 			while (rs.next()) {
-				
-				Cliente cliente = map.get(rs.getInt("cliente_Id"));
-				
-				if (cliente == null) {
-					cliente = instantiateCliente(rs);
-					map.put(rs.getInt("cliente_Id"), cliente);
-				}
-				
-				Usuario obj = instantiateUsuario(rs, cliente);
+				Usuario obj = instantiateUsuario(rs);
 				list.add(obj);			
 			}
 			return list;

@@ -5,8 +5,10 @@ import java.util.List;
 import model.dao.DaoFactory;
 import model.dao.Pessoa_FisicaDao;
 import model.dao.Pessoa_JuridicaDao;
+import model.dao.UsuarioDao;
 import model.entities.Pessoa_Fisica;
 import model.entities.Pessoa_Juridica;
+import model.entities.Usuario;
 
 public class Test {
 
@@ -16,20 +18,34 @@ public class Test {
 		
 		Pessoa_JuridicaDao p_JDao = DaoFactory.createPessoa_JuridicaDao();
 		
+		UsuarioDao userDao = DaoFactory.createUsuarioDao();
+		
 		System.out.println("=== TEST 1: findById =====");
 		Pessoa_Fisica p_F = p_FDao.findById(1);
 		
 		Pessoa_Juridica p_J = p_JDao.findById(1);
 		
+		Usuario user = userDao.findById(1);
+		
 		System.out.println(p_F);
 		
 		System.out.println(p_J);
+		
+		System.out.println(user);
 		
 		System.out.println("=== TEST 2: findAll =====");
 		List<Pessoa_Fisica> list = p_FDao.findAll();
 		
 		for (Pessoa_Fisica obj : list) {
 			System.out.println(obj);
+		}
+		
+		System.out.println("=== TEST 3: findAll de Usuarios =====");
+		
+		List<Usuario> listUsers = userDao.findAll();
+		
+		for (Usuario u : listUsers) {
+			System.out.println(u);
 		}
 		
 	}
