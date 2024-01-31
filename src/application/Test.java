@@ -7,6 +7,7 @@ import model.dao.DaoFactory;
 import model.dao.Pessoa_FisicaDao;
 import model.dao.Pessoa_JuridicaDao;
 import model.dao.UsuarioDao;
+import model.entities.Cliente;
 import model.entities.Pessoa_Fisica;
 import model.entities.Pessoa_Juridica;
 import model.entities.Usuario;
@@ -62,6 +63,14 @@ public class Test {
 		
 		userDao.authenticateUser(authUser);
 		
+		System.out.println("=== TEST 5: insert ====");
+		
+		Cliente clienteInsert = new Cliente(null, "Greg", "greg@gmail.com", "47 99318744", "Rua Rio Carlos, 456");
+		
+		Pessoa_Fisica p_F2 = new Pessoa_Fisica(null, null, null, null, null, "12315554", "15456436", null, null, null, clienteInsert);
+		
+		p_FDao.insert(p_F2, clienteInsert);
+		System.out.println("Inserted! New id = " + clienteInsert.getId());
 		
 	}
 
