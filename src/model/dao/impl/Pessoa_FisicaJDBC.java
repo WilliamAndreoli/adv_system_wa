@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import db.DB;
 import db.DbException;
@@ -97,8 +100,43 @@ public class Pessoa_FisicaJDBC implements Pessoa_FisicaDao {
 
 	@Override
 	public List<Pessoa_Fisica> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement(
+				    "SELECT pessoa_fisica.*, cliente.nome as Nome, cliente.email as Email, "
+				    + "cliente.telefone as Telefone, cliente.endereco as Endereco "
+				    + "FROM pessoa_fisica INNER JOIN cliente "
+				    + "ON pessoa_fisica.cliente_Id = cliente.id "
+				    + "ORDER BY Nome");
+
+		
+			rs = st.executeQuery();
+			
+			List<Pessoa_Fisica> list = new ArrayList<>();
+			Map<Integer, Cliente> map = new HashMap<>();
+			
+			while (rs.next()) {
+				
+				Cliente cliente = map.get(rs.getInt("cliente_Id"));
+				
+				if (cliente == null) {
+					cliente = instantiateCliente(rs);
+					map.put(rs.getInt("cliente_Id"), cliente);
+				}
+				
+				Pessoa_Fisica obj = instantiatePessoa_Fisica(rs, cliente);
+				list.add(obj);			
+			}
+			return list;
+		} 
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
 	}
 
 	

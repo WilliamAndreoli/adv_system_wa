@@ -72,7 +72,7 @@ public class Pessoa_JuridicaJDBC implements Pessoa_JuridicaDao {
 	private Pessoa_Juridica instantiatePessoa_Juridica(ResultSet rs, Cliente cliente) throws SQLException {
 		Pessoa_Juridica obj = new Pessoa_Juridica();
 		obj.setId(rs.getInt("id"));
-		obj.setNome_fantasia("nome_Fantasia");
+		obj.setNome_fantasia(rs.getString("nome_Fantasia"));
 		obj.setCnpj(rs.getString("cnpj"));
 		obj.setCliente_Id(cliente);
 		return obj;

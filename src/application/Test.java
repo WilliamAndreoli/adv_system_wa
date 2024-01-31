@@ -1,5 +1,7 @@
 package application;
 
+import java.util.List;
+
 import model.dao.DaoFactory;
 import model.dao.Pessoa_FisicaDao;
 import model.dao.Pessoa_JuridicaDao;
@@ -22,6 +24,13 @@ public class Test {
 		System.out.println(p_F);
 		
 		System.out.println(p_J);
+		
+		System.out.println("=== TEST 2: findAll =====");
+		List<Pessoa_Fisica> list = p_FDao.findAll();
+		
+		for (Pessoa_Fisica obj : list) {
+			System.out.println(obj);
+		}
 		
 	}
 
