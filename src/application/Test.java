@@ -1,6 +1,7 @@
 package application;
 
 import java.util.List;
+import java.util.Scanner;
 
 import model.dao.DaoFactory;
 import model.dao.Pessoa_FisicaDao;
@@ -13,6 +14,8 @@ import model.entities.Usuario;
 public class Test {
 
 	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
 		
 		Pessoa_FisicaDao p_FDao = DaoFactory.createPessoa_FisicaDao();
 		
@@ -41,12 +44,24 @@ public class Test {
 		}
 		
 		System.out.println("=== TEST 3: findAll de Usuarios =====");
-		
+	
 		List<Usuario> listUsers = userDao.findAll();
 		
 		for (Usuario u : listUsers) {
 			System.out.println(u);
 		}
+		
+		System.out.println("=== TEST 4: authenticateUser ====");
+		
+		System.out.println("Digite o login: ");
+		String login = sc.nextLine();
+		System.out.println("Digite a senha: ");
+		String senha = sc.nextLine();
+		
+		Usuario authUser = new Usuario(1000, login, senha);
+		
+		userDao.authenticateUser(authUser);
+		
 		
 	}
 

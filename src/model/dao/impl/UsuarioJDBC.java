@@ -102,6 +102,35 @@ public class UsuarioJDBC implements UsuarioDao {
 		}
 	}
 
+	@Override
+	public void authenticateUser(Usuario obj) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement(
+				    "SELECT usuario.* "
+				    + "FROM usuario "
+				    + "WHERE usuario.login = ? and usuario.senha = ?");
+			
+			st.setString(1, obj.getLogin());
+			st.setString(2, obj.getSenha());
+			rs = st.executeQuery();
+			if (rs.next()) {				
+				System.out.println("Bem vindo ao sistema");
+			} 
+			else {
+				System.out.println("Usuário ou senha inválido");
+			}
+		} 
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+	}
+
 	
 	
 }

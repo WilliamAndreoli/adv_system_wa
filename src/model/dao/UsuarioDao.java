@@ -11,5 +11,6 @@ public interface UsuarioDao {
 	void deletebyId(Integer id);
 	Usuario findById(Integer id);
 	List<Usuario> findAll();
+	void authenticateUser(Usuario obj);
 	
 }
