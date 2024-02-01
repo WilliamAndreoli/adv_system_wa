@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import db.DB;
@@ -21,8 +22,85 @@ public class Pessoa_JuridicaJDBC implements Pessoa_JuridicaDao {
 	}
 	
 	@Override
-	public void insert(Pessoa_Juridica obj) {
-		// TODO Auto-generated method stub
+	public void insert(Pessoa_Juridica obj, Cliente cliente) {
+		String sqlCliente = null;
+		String sqlPessoaJuridica = null;
+		PreparedStatement stmtCliente = null;
+		PreparedStatement stmtPessoaJuridica = null;
+		try {
+		    conn.setAutoCommit(false); // Desativa o modo de auto-commit
+
+		    // Inserir cliente
+		    sqlCliente = "INSERT INTO cliente (nome, email, telefone, endereco) VALUES (?, ?, ?, ?)";
+		    stmtCliente = conn.prepareStatement(sqlCliente, Statement.RETURN_GENERATED_KEYS);
+		    stmtCliente.setString(1, cliente.getNome());
+		    stmtCliente.setString(2, cliente.getEmail());
+		    stmtCliente.setString(3, cliente.getTelefone());
+		    stmtCliente.setString(4, cliente.getEndereco());
+		    int affectedRows = stmtCliente.executeUpdate();
+
+		    // Recuperar o ID do cliente inserido
+		    int clienteId = -1;
+		    if (affectedRows > 0) {
+		        ResultSet generatedKeys = stmtCliente.getGeneratedKeys();
+		        if (generatedKeys.next()) {
+		            clienteId = generatedKeys.getInt(1);
+		            
+		        }
+		    } else {
+		        throw new SQLException("Falha ao inserir cliente, nenhum registro afetado.");
+		    }
+
+		    // Inserir pessoa física
+		    sqlPessoaJuridica = "INSERT INTO pessoa_juridica (nome_fantasia, cnpj, cliente_Id) VALUES (?, ?, ?)";
+		    stmtPessoaJuridica = conn.prepareStatement(sqlPessoaJuridica, Statement.RETURN_GENERATED_KEYS);
+		    stmtPessoaJuridica.setString(1, obj.getNome_fantasia());
+		    stmtPessoaJuridica.setString(2, obj.getCnpj());
+		    stmtPessoaJuridica.setInt(3, clienteId); // Utiliza o ID do cliente recuperado anteriormente
+		    int affectedRows1 = stmtPessoaJuridica.executeUpdate();
+		    
+		 // Recuperar o ID do cliente inserido
+		    
+		    int p_JId = -1;
+		    if (affectedRows1 > 0) {
+		        ResultSet generatedKeys1 = stmtPessoaJuridica.getGeneratedKeys();
+		        if (generatedKeys1.next()) {
+		            p_JId = generatedKeys1.getInt(1);
+		            
+		        }
+		    } else {
+		        throw new SQLException("Falha ao inserir pessoa juridica, nenhum registro afetado.");
+		    }
+		    
+		    // Confirma a transação
+		    conn.commit();
+		    
+		    cliente.setId(clienteId);
+		    obj.setId(p_JId);
+		} catch (SQLException e) {
+		    // Em caso de erro, desfaz a transação
+		    try {
+		        if (conn != null) {
+		            conn.rollback();
+		        }
+		    } catch (SQLException ex) {
+		        ex.printStackTrace();
+		    }
+		    e.printStackTrace();
+		} finally {
+		    try {
+		        if (stmtCliente != null) {
+		            stmtCliente.close();
+		        }
+		        if (stmtPessoaJuridica != null) {
+		            stmtPessoaJuridica.close();
+		        }
+		        conn.setAutoCommit(true); // Restaura o modo de auto-commit
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		}
+		
 		
 	}
 

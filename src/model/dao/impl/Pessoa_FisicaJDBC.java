@@ -62,14 +62,14 @@ public class Pessoa_FisicaJDBC implements Pessoa_FisicaDao {
 		    stmtPessoaFisica.setString(4, obj.getCtps());
 		    stmtPessoaFisica.setString(5, obj.getCnh());
 		    stmtPessoaFisica.setInt(6, clienteId); // Utiliza o ID do cliente recuperado anteriormente
-		    stmtPessoaFisica.executeUpdate();
+		    int affectedRows1 = stmtPessoaFisica.executeUpdate();
 
 		 // Recuperar o ID do cliente inserido
 		    int p_FId = -1;
-		    if (affectedRows > 0) {
-		        ResultSet generatedKeys = stmtPessoaFisica.getGeneratedKeys();
-		        if (generatedKeys.next()) {
-		            p_FId = generatedKeys.getInt(1);
+		    if (affectedRows1 > 0) {
+		        ResultSet generatedKeys1 = stmtPessoaFisica.getGeneratedKeys();
+		        if (generatedKeys1.next()) {
+		            p_FId = generatedKeys1.getInt(1);
 		            
 		        }
 		    } else {
@@ -80,7 +80,7 @@ public class Pessoa_FisicaJDBC implements Pessoa_FisicaDao {
 		    conn.commit();
 		    
 		    cliente.setId(clienteId);
-		    obj.setId(null);
+		    obj.setId(p_FId);
 		} catch (SQLException e) {
 		    // Em caso de erro, desfaz a transação
 		    try {

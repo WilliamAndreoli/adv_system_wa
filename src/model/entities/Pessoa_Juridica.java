@@ -2,7 +2,7 @@ package model.entities;
 
 import java.util.Objects;
 
-public class Pessoa_Juridica extends Cliente{
+public class Pessoa_Juridica extends Cliente {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
@@ -14,10 +14,11 @@ public class Pessoa_Juridica extends Cliente{
 	public Pessoa_Juridica() {
 	}
 
-	public Pessoa_Juridica(Integer id, String nome, String email, String telefone, String endereco, String nome_fantasia, String cnpj) {
+	public Pessoa_Juridica(Integer id, String nome, String email, String telefone, String endereco, String nome_fantasia, String cnpj, Cliente cliente_Id) {
 		super(id, nome, email, telefone, endereco);
 		this.nome_fantasia = nome_fantasia;
 		this.cnpj = cnpj;
+		this.cliente_Id = cliente_Id;
 	}
 
 	public Integer getId() {
