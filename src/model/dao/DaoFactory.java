@@ -6,6 +6,7 @@ import model.dao.impl.ClienteJDBC;
 import model.dao.impl.Parte_ProcessoJDBC;
 import model.dao.impl.Pessoa_FisicaJDBC;
 import model.dao.impl.Pessoa_JuridicaJDBC;
+import model.dao.impl.ProcessoJDBC;
 import model.dao.impl.TribunalJDBC;
 import model.dao.impl.UsuarioJDBC;
 
@@ -37,6 +38,10 @@ public class DaoFactory {
 	
 	public static AdvogadoDao createAdvogadoDao() {
 		return new AdvogadoJDBC(DB.getConnection());
+	}
+	
+	public static ProcessoDao createProcessoDao() {
+		return new ProcessoJDBC(DB.getConnection());
 	}
 	
 }

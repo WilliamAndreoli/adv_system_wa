@@ -14,7 +14,7 @@ public class Processo implements Serializable {
 	private String numero_Processo;
 	private Date data_De_Abertura;
 	private String tipo;
-	private Status status;
+	private Status status_Processo;
 	private String juiz;
 	private String descricao;
 	private Double honorarios;
@@ -22,9 +22,9 @@ public class Processo implements Serializable {
 	
 	private Cliente cliente_Id;
 	
-	private List<Advogado> advogados;
+	private Advogado advogado_Id;
 	
-	private List<Parte_Processo> partes;
+	private Parte_Processo parte;
 	
 	private Tribunal tribunal;
 	
@@ -33,22 +33,22 @@ public class Processo implements Serializable {
 	public Processo() {
 	}
 
-	public Processo(Integer id, String numero_Processo, Date data_De_Abertura, String tipo, Status status, String juiz,
-			String descricao, Double honorarios, Double custos, Cliente cliente_Id, List<Advogado> advogados,
-			List<Parte_Processo> partes, Tribunal tribunal, Usuario usuario) {
+	public Processo(Integer id, String numero_Processo, Date data_De_Abertura, String tipo, Status status_Processo, String juiz,
+			String descricao, Double honorarios, Double custos, Cliente cliente_Id, Advogado advogado_Id,
+			Parte_Processo parte, Tribunal tribunal, Usuario usuario) {
 		super();
 		this.id = id;
 		this.numero_Processo = numero_Processo;
 		this.data_De_Abertura = data_De_Abertura;
 		this.tipo = tipo;
-		this.status = status;
+		this.status_Processo = status_Processo;
 		this.juiz = juiz;
 		this.descricao = descricao;
 		this.honorarios = honorarios;
 		this.custos = custos;
 		this.cliente_Id = cliente_Id;
-		this.advogados = advogados;
-		this.partes = partes;
+		this.advogado_Id = advogado_Id;
+		this.parte = parte;
 		this.tribunal = tribunal;
 		this.usuario = usuario;
 	}
@@ -86,11 +86,11 @@ public class Processo implements Serializable {
 	}
 
 	public Status getStatus() {
-		return status;
+		return status_Processo;
 	}
 
-	public void setStatus(Status status) {
-		this.status = status;
+	public void setStatus(Status status_Processo) {
+		this.status_Processo = status_Processo;
 	}
 
 	public String getJuiz() {
@@ -133,20 +133,20 @@ public class Processo implements Serializable {
 		this.cliente_Id = cliente_Id;
 	}
 
-	public List<Advogado> getAdvogados() {
-		return advogados;
+	public Advogado getAdvogados() {
+		return advogado_Id;
 	}
 
-	public void setAdvogados(List<Advogado> advogados) {
-		this.advogados = advogados;
+	public void setAdvogados(Advogado advogado_Id) {
+		this.advogado_Id = advogado_Id;
 	}
 
-	public List<Parte_Processo> getPartes() {
-		return partes;
+	public Parte_Processo getPartes() {
+		return parte;
 	}
 
-	public void setPartes(List<Parte_Processo> partes) {
-		this.partes = partes;
+	public void setPartes(Parte_Processo parte) {
+		this.parte = parte;
 	}
 
 	public Tribunal getTribunal() {
@@ -185,9 +185,9 @@ public class Processo implements Serializable {
 	@Override
 	public String toString() {
 		return "Processo [id=" + id + ", numero_Processo=" + numero_Processo + ", data_De_Abertura=" + data_De_Abertura
-				+ ", tipo=" + tipo + ", status=" + status + ", juiz=" + juiz + ", descricao=" + descricao
+				+ ", tipo=" + tipo + ", status=" + status_Processo + ", juiz=" + juiz + ", descricao=" + descricao
 				+ ", honorarios=" + honorarios + ", custos=" + custos + ", cliente_Id=" + cliente_Id + ", advogados="
-				+ advogados + ", partes=" + partes + ", tribunal=" + tribunal + ", usuario=" + usuario + "]";
+				+ advogado_Id + ", partes=" + parte + ", tribunal=" + tribunal + ", usuario=" + usuario + "]";
 	}
 	
 	
