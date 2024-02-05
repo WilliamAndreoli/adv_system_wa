@@ -108,7 +108,10 @@ public class Test {
 		
 		System.out.println("Update complete!");
 		
-		
+		System.out.println("=== TEST 6: delete ====");
+		p_FDao.deletebyId(3);
+		System.out.println("PF deleted!");
+	
 	}
 
 }

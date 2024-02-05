@@ -12,6 +12,8 @@ import java.util.Map;
 
 import db.DB;
 import db.DbException;
+import model.dao.ClienteDao;
+import model.dao.DaoFactory;
 import model.dao.Pessoa_FisicaDao;
 import model.entities.Cliente;
 import model.entities.Pessoa_Fisica;
@@ -190,11 +192,53 @@ public class Pessoa_FisicaJDBC implements Pessoa_FisicaDao {
 		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
 		}
-	}
+	} 
 
 	@Override
 	public void deletebyId(Integer id) {
-		// TODO Auto-generated method stub
+		PreparedStatement stmtCliente = null;
+		PreparedStatement stmtPessoaFisica = null;
+		try {
+		    conn.setAutoCommit(false); // Desativa o modo de auto-commit
+		    Integer clienteId = getIdCliente(id); 
+		    
+		    // Deleta pessoa física
+		    String sqlPessoaFisica = "DELETE FROM pessoa_fisica WHERE id = ?";
+		    stmtPessoaFisica = conn.prepareStatement(sqlPessoaFisica);
+		    stmtPessoaFisica.setInt(1, id);
+		    stmtPessoaFisica.executeUpdate();
+		    
+		    String sqlCliente = "DELETE FROM cliente WHERE id = ?";
+		    stmtCliente = conn.prepareStatement(sqlCliente);
+		    stmtCliente.setInt(1, clienteId);
+		    stmtCliente.executeUpdate();
+
+		    // Confirma a transação
+		    conn.commit();
+		} catch (SQLException e) {
+		    // Em caso de erro, desfaz a transação
+		    try {
+		        if (conn != null) {
+		            conn.rollback();
+		        }
+		    } catch (SQLException ex) {
+		        ex.printStackTrace();
+		    }
+		    e.printStackTrace();
+		} finally {
+		    try {
+		        if (stmtCliente != null) {
+		            stmtCliente.close();
+		        }
+		        if (stmtPessoaFisica != null) {
+		            stmtPessoaFisica.close();
+		        }
+		        conn.setAutoCommit(true); // Restaura o modo de auto-commit
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		}
+		
 		
 	}
 
