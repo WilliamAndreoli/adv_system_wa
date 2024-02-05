@@ -163,11 +163,77 @@ public class Pessoa_JuridicaJDBC implements Pessoa_JuridicaDao {
 		
 		
 	}
+	
+	public Integer getIdCliente(Integer id) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement(
+				    "SELECT pessoa_juridica.cliente_Id "
+				    + "FROM pessoa_juridica "
+				    + "WHERE pessoa_juridica.id = ?");
+			
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			if (rs.next()) {
+				int clienteId = rs.getInt("cliente_Id");
+				
+				return clienteId;
+			}
+			else {
+				throw new DbException("Id not found!");
+			}
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+	} 
 
 	@Override
 	public void deletebyId(Integer id) {
-		// TODO Auto-generated method stub
+		PreparedStatement stmtCliente = null;
+		PreparedStatement stmtPessoaJuridica = null;
+		try {
+		    conn.setAutoCommit(false); // Desativa o modo de auto-commit
+		    Integer clienteId = getIdCliente(id); 
+		    
+		    // Deleta pessoa física
+		    String sqlPessoaFisica = "DELETE FROM pessoa_juridica WHERE id = ?";
+		    stmtPessoaJuridica = conn.prepareStatement(sqlPessoaFisica);
+		    stmtPessoaJuridica.setInt(1, id);
+		    stmtPessoaJuridica.executeUpdate();
+		    
+		    String sqlCliente = "DELETE FROM cliente WHERE id = ?";
+		    stmtCliente = conn.prepareStatement(sqlCliente);
+		    stmtCliente.setInt(1, clienteId);
+		    stmtCliente.executeUpdate();
 
+		    // Confirma a transação
+		    conn.commit();
+		} catch (SQLException e) {
+		    // Em caso de erro, desfaz a transação
+		    try {
+		        if (conn != null) {
+		            conn.rollback();
+		        }
+		    } catch (SQLException ex) {
+		        ex.printStackTrace();
+		    }
+		    e.printStackTrace();
+		} finally {
+		    try {
+		        if (stmtCliente != null) {
+		            stmtCliente.close();
+		        }
+		        if (stmtPessoaJuridica != null) {
+		            stmtPessoaJuridica.close();
+		        }
+		        conn.setAutoCommit(true); // Restaura o modo de auto-commit
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		}
+		
+		
 	}
 
 	@Override
