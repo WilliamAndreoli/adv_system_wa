@@ -1,6 +1,7 @@
 package model.dao;
 
 import db.DB;
+import model.dao.impl.AdvogadoJDBC;
 import model.dao.impl.ClienteJDBC;
 import model.dao.impl.Parte_ProcessoJDBC;
 import model.dao.impl.Pessoa_FisicaJDBC;
@@ -32,6 +33,10 @@ public class DaoFactory {
 	
 	public static TribunalDao createTribunalDao() {
 		return new TribunalJDBC(DB.getConnection());
+	}
+	
+	public static AdvogadoDao createAdvogadoDao() {
+		return new AdvogadoJDBC(DB.getConnection());
 	}
 	
 }
