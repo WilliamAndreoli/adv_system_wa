@@ -1,5 +1,6 @@
 package model.entities;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class Pessoa_Fisica extends Cliente {
@@ -11,13 +12,14 @@ public class Pessoa_Fisica extends Cliente {
 	private String certidao_Casamento;
 	private String ctps;
 	private String cnh;
+	private Date data_Nascimento;
 	
 	private Cliente cliente_Id;
 	
 	public Pessoa_Fisica() {
 	}
 
-	public Pessoa_Fisica(Integer id, String nome, String email, String telefone, String endereco, String cpf, String rg, String certidao_Casamento, String ctps, String cnh, Cliente cliente_Id) {
+	public Pessoa_Fisica(Integer id, String nome, String email, String telefone, String endereco, String cpf, String rg, String certidao_Casamento, String ctps, String cnh, Date data_Nascimento, Cliente cliente_Id) {
 		super(id, nome, email, telefone, endereco);
 		this.id = id;
 		this.cpf = cpf;
@@ -25,6 +27,7 @@ public class Pessoa_Fisica extends Cliente {
 		this.certidao_Casamento = certidao_Casamento;
 		this.ctps = ctps;
 		this.cnh = cnh;
+		this.data_Nascimento = data_Nascimento;
 		this.cliente_Id = cliente_Id;
 	}
 	
@@ -100,6 +103,14 @@ public class Pessoa_Fisica extends Cliente {
 		this.cnh = cnh;
 	}
 	
+	public Date getData_nascimento() {
+		return data_Nascimento;
+	}
+	
+	public void setData_Nascimento(Date data_Nascimento) {
+		this.data_Nascimento = data_Nascimento;
+	}
+	
 	public Cliente getCliente_Id() {
 		return cliente_Id;
 	}
@@ -128,7 +139,7 @@ public class Pessoa_Fisica extends Cliente {
 	@Override
 	public String toString() {
 		return "Pessoa_Fisica [id=" + id + ", cpf=" + cpf + ", rg=" + rg + ", certidao_Casamento="
-				+ certidao_Casamento + ", ctps=" + ctps + ", cnh=" + cnh + ", cliente="+ cliente_Id +"]";
+				+ certidao_Casamento + ", ctps=" + ctps + ", cnh=" + cnh + ", data_nascimento="+ data_Nascimento +", cliente="+ cliente_Id +"]";
 	}
 
 	

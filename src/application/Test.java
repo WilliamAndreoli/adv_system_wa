@@ -1,5 +1,6 @@
 package application;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -67,7 +68,7 @@ public class Test {
 
 		Cliente clienteInsert = new Cliente(null, "Greg", "greg@gmail.com", "47 99318744", "Rua Rio Carlos, 456");
 
-		Pessoa_Fisica p_F2 = new Pessoa_Fisica(null, null, null, null, null, "12315554", "15456436", null, null, null,
+		Pessoa_Fisica p_F2 = new Pessoa_Fisica(null, null, null, null, null, "12315554", "15456436", null, null, null, new Date(),
 				clienteInsert);
 
 		p_FDao.insert(p_F2, clienteInsert);

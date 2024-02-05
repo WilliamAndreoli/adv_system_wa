@@ -54,14 +54,15 @@ public class Pessoa_FisicaJDBC implements Pessoa_FisicaDao {
 		    }
 
 		    // Inserir pessoa física
-		    String sqlPessoaFisica = "INSERT INTO pessoa_fisica (cpf, rg, certidao_Casamento, ctps, cnh, cliente_Id) VALUES (?, ?, ?, ?, ?, ?)";
+		    String sqlPessoaFisica = "INSERT INTO pessoa_fisica (cpf, rg, certidao_Casamento, ctps, cnh, data_Nascimento, cliente_Id) VALUES (?, ?, ?, ?, ?, ?, ?)";
 		    stmtPessoaFisica = conn.prepareStatement(sqlPessoaFisica, Statement.RETURN_GENERATED_KEYS);
 		    stmtPessoaFisica.setString(1, obj.getCpf());
 		    stmtPessoaFisica.setString(2, obj.getRg());
 		    stmtPessoaFisica.setString(3, obj.getCertidao_Casamento());
 		    stmtPessoaFisica.setString(4, obj.getCtps());
 		    stmtPessoaFisica.setString(5, obj.getCnh());
-		    stmtPessoaFisica.setInt(6, clienteId); // Utiliza o ID do cliente recuperado anteriormente
+		    stmtPessoaFisica.setDate(6, new java.sql.Date(obj.getData_nascimento().getTime()));
+		    stmtPessoaFisica.setInt(7, clienteId); // Utiliza o ID do cliente recuperado anteriormente
 		    int affectedRows1 = stmtPessoaFisica.executeUpdate();
 
 		 // Recuperar o ID do cliente inserido
@@ -109,9 +110,9 @@ public class Pessoa_FisicaJDBC implements Pessoa_FisicaDao {
 	}
 
 	@Override
-	public void update(Pessoa_Fisica obj) {
-		// TODO Auto-generated method stub
+	public void update(Pessoa_Fisica obj, Cliente cliente) {
 		
+
 	}
 
 	@Override
@@ -163,6 +164,7 @@ public class Pessoa_FisicaJDBC implements Pessoa_FisicaDao {
 		obj.setCertidao_Casamento(rs.getString("certidao_Casamento"));
 		obj.setCtps(rs.getString("ctps"));
 		obj.setCnh(rs.getString("cnh"));
+		obj.setData_Nascimento(rs.getDate("data_Nascimento"));
 		obj.setCliente_Id(cliente);
 		return obj;
 	}
