@@ -19,8 +19,8 @@ public class Pessoa_Fisica extends Cliente {
 	public Pessoa_Fisica() {
 	}
 
-	public Pessoa_Fisica(Integer id, String nome, String email, String telefone, String endereco, String cpf, String rg, String certidao_Casamento, String ctps, String cnh, Date data_Nascimento, Cliente cliente_Id) {
-		super(id, nome, email, telefone, endereco);
+	public Pessoa_Fisica(Integer id, String nome, String email, String telefone, String endereco, String tipo, String cpf, String rg, String certidao_Casamento, String ctps, String cnh, Date data_Nascimento, Cliente cliente_Id) {
+		super(id, nome, email, telefone, endereco, tipo);
 		this.id = id;
 		this.cpf = cpf;
 		this.rg = rg;

@@ -5,7 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import db.DB;
 import db.DbException;
@@ -31,12 +34,13 @@ public class Pessoa_JuridicaJDBC implements Pessoa_JuridicaDao {
 			conn.setAutoCommit(false); // Desativa o modo de auto-commit
 
 			// Inserir cliente
-			sqlCliente = "INSERT INTO cliente (nome, email, telefone, endereco) VALUES (?, ?, ?, ?)";
+			sqlCliente = "INSERT INTO cliente (nome, email, telefone, endereco, tipo) VALUES (?, ?, ?, ?, ?)";
 			stmtCliente = conn.prepareStatement(sqlCliente, Statement.RETURN_GENERATED_KEYS);
 			stmtCliente.setString(1, cliente.getNome());
 			stmtCliente.setString(2, cliente.getEmail());
 			stmtCliente.setString(3, cliente.getTelefone());
 			stmtCliente.setString(4, cliente.getEndereco());
+			stmtCliente.setString(5, cliente.getTipo());
 			int affectedRows = stmtCliente.executeUpdate();
 
 			// Recuperar o ID do cliente inserido
@@ -113,13 +117,14 @@ public class Pessoa_JuridicaJDBC implements Pessoa_JuridicaDao {
 		    conn.setAutoCommit(false); // Desativa o modo de auto-commit
 
 		    // Update cliente
-		    sqlCliente = "UPDATE cliente SET nome = ?, email = ?, telefone = ?, endereco = ? WHERE id = ?";
+		    sqlCliente = "UPDATE cliente SET nome = ?, email = ?, telefone = ?, endereco = ?, tipo = ? WHERE id = ?";
 		    stmtCliente = conn.prepareStatement(sqlCliente);
 		    stmtCliente.setString(1, cliente.getNome());
 		    stmtCliente.setString(2, cliente.getEmail());
 		    stmtCliente.setString(3, cliente.getTelefone());
 		    stmtCliente.setString(4, cliente.getEndereco());
-		    stmtCliente.setInt(5, cliente.getId()); 
+		    stmtCliente.setString(5, cliente.getTipo());
+		    stmtCliente.setInt(6, cliente.getId()); 
 		    stmtCliente.executeUpdate();
 
 		    // Update pessoa física
@@ -171,7 +176,7 @@ public class Pessoa_JuridicaJDBC implements Pessoa_JuridicaDao {
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement("SELECT pessoa_juridica.*, cliente.nome as Nome, "
-					+ "cliente.email as Email, cliente.telefone as Telefone, cliente.endereco as Endereco "
+					+ "cliente.email as Email, cliente.telefone as Telefone, cliente.endereco as Endereco, cliente.tipo as Tipo "
 					+ "FROM pessoa_juridica INNER JOIN cliente " + "ON pessoa_juridica.cliente_Id = cliente.id "
 					+ "WHERE pessoa_juridica.id = ?");
 
@@ -208,13 +213,49 @@ public class Pessoa_JuridicaJDBC implements Pessoa_JuridicaDao {
 		cliente.setEmail(rs.getString("email"));
 		cliente.setTelefone(rs.getString("telefone"));
 		cliente.setEndereco(rs.getString("endereco"));
+		cliente.setTipo("tipo");
 		return cliente;
 	}
 
 	@Override
 	public List<Pessoa_Juridica> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement(
+				    "SELECT pessoa_juridica.*, cliente.nome as Nome, cliente.email as Email, "
+				    + "cliente.telefone as Telefone, cliente.endereco as Endereco, cliente.tipo as Tipo "
+				    + "FROM pessoa_juridica INNER JOIN cliente "
+				    + "ON pessoa_juridica.cliente_Id = cliente.id "
+				    + "ORDER BY Nome");
+
+		
+			rs = st.executeQuery();
+			
+			List<Pessoa_Juridica> list = new ArrayList<>();
+			Map<Integer, Cliente> map = new HashMap<>();
+			
+			while (rs.next()) {
+				
+				Cliente cliente = map.get(rs.getInt("cliente_Id"));
+				
+				if (cliente == null) {
+					cliente = instantiateCliente(rs);
+					map.put(rs.getInt("cliente_Id"), cliente);
+				}
+				
+				Pessoa_Juridica obj = instantiatePessoa_Juridica(rs, cliente);
+				list.add(obj);			
+			}
+			return list;
+		} 
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
 	}
 
 }

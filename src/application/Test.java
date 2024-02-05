@@ -67,17 +67,17 @@ public class Test {
 
 		System.out.println("=== TEST 5: insert ====");
 
-		Cliente clienteInsert = new Cliente(null, "Greg", "greg@gmail.com", "47 99318744", "Rua Rio Carlos, 456");
+		Cliente clienteInsert = new Cliente(null, "Greg", "greg@gmail.com", "47 99318744", "Rua Rio Carlos, 456", "P_F");
 
-		Pessoa_Fisica p_F2 = new Pessoa_Fisica(null, null, null, null, null, "12315554", "15456436", null, null, null, new Date(),
+		Pessoa_Fisica p_F2 = new Pessoa_Fisica(null, null, null, null, null, null, "12315554", "15456436", null, null, null, new Date(),
 				clienteInsert);
 
 		p_FDao.insert(p_F2, clienteInsert);
 		System.out.println("Inserted! New id = " + p_F2.getId());
 
-		Cliente clienteInsert1 = new Cliente(null, "Multinational", "multi@gmail.com", "47 34867898", "Rua Rio Carlos, 456");
+		Cliente clienteInsert1 = new Cliente(null, "Multinational", "multi@gmail.com", "47 34867898", "Rua Rio Carlos, 456", "P_J");
 
-		Pessoa_Juridica p_J2 = new Pessoa_Juridica(null, null, null, null, null, "Multinational", "1324325", clienteInsert1);
+		Pessoa_Juridica p_J2 = new Pessoa_Juridica(null, null, null, null, null, null, "Multinational", "1324325", clienteInsert1);
 
 		p_JDao.insert(p_J2, clienteInsert);
 		System.out.println("Inserted! New id = " + p_J2.getId());
@@ -90,8 +90,8 @@ public class Test {
 		
 		System.out.println("=== TEST 5: update ====");
 		ClienteDao clienteDao = DaoFactory.createCienteDao();
-		Cliente cliente1 = clienteDao.findById(1);
-		Cliente cliente2 = clienteDao.findById(2);
+		Cliente cliente1 = clienteDao.findById(4);
+		Cliente cliente2 = clienteDao.findById(5);
 		
 		p_F = p_FDao.findById(2);
 		p_J = p_JDao.findById(1);

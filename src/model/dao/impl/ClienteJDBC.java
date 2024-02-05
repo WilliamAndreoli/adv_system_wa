@@ -54,6 +54,7 @@ public class ClienteJDBC implements ClienteDao {
 		cliente.setEmail(rs.getString("email"));
 		cliente.setTelefone(rs.getString("telefone"));
 		cliente.setEndereco(rs.getString("endereco"));
+		cliente.setTipo(rs.getString("tipo"));
 		return cliente;
 	}
 

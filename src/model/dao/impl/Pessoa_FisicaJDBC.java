@@ -35,12 +35,13 @@ public class Pessoa_FisicaJDBC implements Pessoa_FisicaDao {
 		    conn.setAutoCommit(false); // Desativa o modo de auto-commit
 
 		    // Inserir cliente
-		    sqlCliente = "INSERT INTO cliente (nome, email, telefone, endereco) VALUES (?, ?, ?, ?)";
+		    sqlCliente = "INSERT INTO cliente (nome, email, telefone, endereco, tipo) VALUES (?, ?, ?, ?, ?)";
 		    stmtCliente = conn.prepareStatement(sqlCliente, Statement.RETURN_GENERATED_KEYS);
 		    stmtCliente.setString(1, cliente.getNome());
 		    stmtCliente.setString(2, cliente.getEmail());
 		    stmtCliente.setString(3, cliente.getTelefone());
 		    stmtCliente.setString(4, cliente.getEndereco());
+		    stmtCliente.setString(5, cliente.getTipo());
 		    int affectedRows = stmtCliente.executeUpdate();
 
 		    // Recuperar o ID do cliente inserido
@@ -120,13 +121,14 @@ public class Pessoa_FisicaJDBC implements Pessoa_FisicaDao {
 		    conn.setAutoCommit(false); // Desativa o modo de auto-commit
 
 		    // Update cliente
-		    sqlCliente = "UPDATE cliente SET nome = ?, email = ?, telefone = ?, endereco = ? WHERE id = ?";
+		    sqlCliente = "UPDATE cliente SET nome = ?, email = ?, telefone = ?, endereco = ?, tipo = ? WHERE id = ?";
 		    stmtCliente = conn.prepareStatement(sqlCliente);
 		    stmtCliente.setString(1, cliente.getNome());
 		    stmtCliente.setString(2, cliente.getEmail());
 		    stmtCliente.setString(3, cliente.getTelefone());
 		    stmtCliente.setString(4, cliente.getEndereco());
-		    stmtCliente.setInt(5, cliente.getId()); 
+		    stmtCliente.setString(5, cliente.getTipo());
+		    stmtCliente.setInt(6, cliente.getId()); 
 		    stmtCliente.executeUpdate();
 
 		    // Update pessoa física
@@ -249,7 +251,7 @@ public class Pessoa_FisicaJDBC implements Pessoa_FisicaDao {
 		try {
 			st = conn.prepareStatement(
 				    "SELECT pessoa_fisica.*, cliente.nome as Nome, "
-				    + "cliente.email as Email, cliente.telefone as Telefone, cliente.endereco as Endereco "
+				    + "cliente.email as Email, cliente.telefone as Telefone, cliente.endereco as Endereco, cliente.tipo as Tipo "
 				    + "FROM pessoa_fisica INNER JOIN cliente "
 				    + "ON pessoa_fisica.cliente_Id = cliente.id "
 				    + "WHERE pessoa_fisica.id = ?");
@@ -297,6 +299,7 @@ public class Pessoa_FisicaJDBC implements Pessoa_FisicaDao {
 		cliente.setEmail(rs.getString("email"));
 		cliente.setTelefone(rs.getString("telefone"));
 		cliente.setEndereco(rs.getString("endereco"));
+		cliente.setTipo(rs.getString("tipo"));
 		return cliente;
 	}
 
@@ -307,7 +310,7 @@ public class Pessoa_FisicaJDBC implements Pessoa_FisicaDao {
 		try {
 			st = conn.prepareStatement(
 				    "SELECT pessoa_fisica.*, cliente.nome as Nome, cliente.email as Email, "
-				    + "cliente.telefone as Telefone, cliente.endereco as Endereco "
+				    + "cliente.telefone as Telefone, cliente.endereco as Endereco, cliente.tipo as Tipo "
 				    + "FROM pessoa_fisica INNER JOIN cliente "
 				    + "ON pessoa_fisica.cliente_Id = cliente.id "
 				    + "ORDER BY Nome");

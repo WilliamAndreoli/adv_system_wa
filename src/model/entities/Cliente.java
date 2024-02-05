@@ -11,17 +11,18 @@ public class Cliente implements Serializable {
 	protected String email;
 	protected String telefone;
 	protected String endereco;
+	protected String tipo;
 	
 	public Cliente() {
 	}
 
-	public Cliente(Integer id, String nome, String email, String telefone, String endereco) {
-		super();
+	public Cliente(Integer id, String nome, String email, String telefone, String endereco, String tipo) {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.telefone = telefone;
 		this.endereco = endereco;
+		this.tipo = tipo;
 	}
 
 	public Integer getId() {
@@ -64,6 +65,14 @@ public class Cliente implements Serializable {
 		this.endereco = endereco;
 	}
 
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -84,7 +93,7 @@ public class Cliente implements Serializable {
 	@Override
 	public String toString() {
 		return "Cliente [id=" + id + ", nome=" + nome + ", email=" + email + ", telefone=" + telefone + ", endereco="
-				+ endereco + "]";
+				+ endereco + ", tipo=" + tipo +" ]";
 	}
 
 	
