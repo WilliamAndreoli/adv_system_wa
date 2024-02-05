@@ -60,7 +60,22 @@ public class UsuarioJDBC implements UsuarioDao {
 
 	@Override
 	public void update(Usuario obj) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("UPDATE usuario "
+					+ "SET login = ?, senha = ? "
+					+ "WHERE Id = ?");
+			
+			st.setString(1, obj.getLogin());
+			st.setString(2, obj.getSenha());
+			st.setInt(3, obj.getId());
+			
+			st.executeUpdate();
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+		}
 		
 	}
 

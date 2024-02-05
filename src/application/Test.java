@@ -92,16 +92,22 @@ public class Test {
 		ClienteDao clienteDao = DaoFactory.createCienteDao();
 		Cliente cliente1 = clienteDao.findById(1);
 		Cliente cliente2 = clienteDao.findById(2);
-		p_F = p_FDao.findById(2);
 		
+		p_F = p_FDao.findById(2);
 		p_J = p_JDao.findById(1);
+		user = userDao.findById(2);
 		
 		cliente1.setEmail("will@gmail.com");
 		cliente2.setNome("Angela");
 		p_J.setCnpj("654321");
+		user.setLogin("Damazo");
+		
 		p_FDao.update(p_F, cliente1);
 		p_JDao.update(p_J, cliente2);
+		userDao.update(user);
+		
 		System.out.println("Update complete!");
+		
 		
 	}
 
