@@ -115,7 +115,7 @@ public class Test {
 		//p_JDao.deletebyId(5);
 		//System.out.println("PJ deleted!");
 		
-		userDao.deletebyId(3);
+		//userDao.deletebyId(3);
 	}
 
 }
