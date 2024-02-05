@@ -80,6 +80,12 @@ public class Test {
 		p_JDao.insert(p_J2, clienteInsert);
 		System.out.println("Inserted! New id = " + p_J2.getId());
 
+		Usuario userInsert = new Usuario(null, "Jose", "1234");
+		
+		userDao.insert(userInsert);
+		
+		System.out.println("Inserted! New id = " + userInsert.getId());
+		
 	}
 
 }
