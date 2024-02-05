@@ -111,8 +111,85 @@ public class Pessoa_FisicaJDBC implements Pessoa_FisicaDao {
 
 	@Override
 	public void update(Pessoa_Fisica obj, Cliente cliente) {
-		
+		String sqlCliente = null;
+		PreparedStatement stmtCliente = null;
+		PreparedStatement stmtPessoaFisica = null;
+		try {
+		    conn.setAutoCommit(false); // Desativa o modo de auto-commit
 
+		    // Update cliente
+		    sqlCliente = "UPDATE cliente SET nome = ?, email = ?, telefone = ?, endereco = ? WHERE id = ?";
+		    stmtCliente = conn.prepareStatement(sqlCliente);
+		    stmtCliente.setString(1, cliente.getNome());
+		    stmtCliente.setString(2, cliente.getEmail());
+		    stmtCliente.setString(3, cliente.getTelefone());
+		    stmtCliente.setString(4, cliente.getEndereco());
+		    stmtCliente.setInt(5, cliente.getId()); 
+		    stmtCliente.executeUpdate();
+
+		    // Update pessoa física
+		    String sqlPessoaFisica = "UPDATE pessoa_fisica SET cpf = ?, rg = ?, certidao_Casamento = ?, ctps = ?, cnh = ?, data_Nascimento = ? WHERE id = ?";
+		    stmtPessoaFisica = conn.prepareStatement(sqlPessoaFisica);
+		    stmtPessoaFisica.setString(1, obj.getCpf());
+		    stmtPessoaFisica.setString(2, obj.getRg());
+		    stmtPessoaFisica.setString(3, obj.getCertidao_Casamento());
+		    stmtPessoaFisica.setString(4, obj.getCtps());
+		    stmtPessoaFisica.setString(5, obj.getCnh());
+		    stmtPessoaFisica.setDate(6, new java.sql.Date(obj.getData_nascimento().getTime()));
+		    stmtPessoaFisica.setInt(7, obj.getId()); // Supondo que obj.getId() retorna o ID da pessoa física
+		    int affectedRows1 = stmtPessoaFisica.executeUpdate();
+
+		    // Confirma a transação
+		    conn.commit();
+		} catch (SQLException e) {
+		    // Em caso de erro, desfaz a transação
+		    try {
+		        if (conn != null) {
+		            conn.rollback();
+		        }
+		    } catch (SQLException ex) {
+		        ex.printStackTrace();
+		    }
+		    e.printStackTrace();
+		} finally {
+		    try {
+		        if (stmtCliente != null) {
+		            stmtCliente.close();
+		        }
+		        if (stmtPessoaFisica != null) {
+		            stmtPessoaFisica.close();
+		        }
+		        conn.setAutoCommit(true); // Restaura o modo de auto-commit
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		}
+		
+		
+	}
+	
+	public Integer getIdCliente(Integer id) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement(
+				    "SELECT pessoa_fisica.cliente_Id "
+				    + "FROM pessoa_fisica "
+				    + "WHERE pessoa_fisica.id = ?");
+			
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			if (rs.next()) {
+				int clienteId = rs.getInt("cliente_Id");
+				
+				return clienteId;
+			}
+			else {
+				throw new DbException("Id not found!");
+			}
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
 	}
 
 	@Override

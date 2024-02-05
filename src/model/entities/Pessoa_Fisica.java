@@ -119,11 +119,15 @@ public class Pessoa_Fisica extends Cliente {
 		this.cliente_Id = cliente_Id;
 	}
 
+	public Integer getId_Cliente(Cliente cliente) {
+		return cliente.getId();
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
+import model.dao.ClienteDao;
 import model.dao.DaoFactory;
 import model.dao.Pessoa_FisicaDao;
 import model.dao.Pessoa_JuridicaDao;
@@ -86,6 +87,15 @@ public class Test {
 		userDao.insert(userInsert);
 		
 		System.out.println("Inserted! New id = " + userInsert.getId());
+		
+		System.out.println("=== TEST 5: update ====");
+		ClienteDao clienteDao = DaoFactory.createCienteDao();
+		Cliente cliente1 = clienteDao.findById(1);
+		p_F = p_FDao.findById(2);
+		
+		cliente1.setEmail("will@gmail.com");
+		p_FDao.update(p_F, cliente1);
+		System.out.println("Update complete!");
 		
 	}
 
