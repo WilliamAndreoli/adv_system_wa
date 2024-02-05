@@ -6,7 +6,7 @@ public class Pessoa_Juridica extends Cliente {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
-	private String nome_fantasia;
+	private String nome_Fantasia;
 	private String cnpj;
 	
 	private Cliente cliente_Id;
@@ -14,9 +14,9 @@ public class Pessoa_Juridica extends Cliente {
 	public Pessoa_Juridica() {
 	}
 
-	public Pessoa_Juridica(Integer id, String nome, String email, String telefone, String endereco, String nome_fantasia, String cnpj, Cliente cliente_Id) {
+	public Pessoa_Juridica(Integer id, String nome, String email, String telefone, String endereco, String nome_Fantasia, String cnpj, Cliente cliente_Id) {
 		super(id, nome, email, telefone, endereco);
-		this.nome_fantasia = nome_fantasia;
+		this.nome_Fantasia = nome_Fantasia;
 		this.cnpj = cnpj;
 		this.cliente_Id = cliente_Id;
 	}
@@ -29,12 +29,12 @@ public class Pessoa_Juridica extends Cliente {
 		this.id = id;
 	}
 
-	public String getNome_fantasia() {
-		return nome_fantasia;
+	public String getNome_Fantasia() {
+		return nome_Fantasia;
 	}
 
-	public void setNome_fantasia(String nome_fantasia) {
-		this.nome_fantasia = nome_fantasia;
+	public void setNome_Fantasia(String nome_Fantasia) {
+		this.nome_Fantasia = nome_Fantasia;
 	}
 
 	public String getCnpj() {
@@ -75,7 +75,7 @@ public class Pessoa_Juridica extends Cliente {
 
 	@Override
 	public String toString() {
-		return "Pessoa_Juridica [id=" + id + ", nome_fantasia=" + nome_fantasia + ", cnpj=" + cnpj + ", cliente="+ cliente_Id +"]";
+		return "Pessoa_Juridica [id=" + id + ", nome_Fantasia=" + nome_Fantasia + ", cnpj=" + cnpj + ", cliente="+ cliente_Id +"]";
 	}
 	
 	

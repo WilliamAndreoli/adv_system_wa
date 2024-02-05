@@ -91,10 +91,16 @@ public class Test {
 		System.out.println("=== TEST 5: update ====");
 		ClienteDao clienteDao = DaoFactory.createCienteDao();
 		Cliente cliente1 = clienteDao.findById(1);
+		Cliente cliente2 = clienteDao.findById(2);
 		p_F = p_FDao.findById(2);
 		
+		p_J = p_JDao.findById(1);
+		
 		cliente1.setEmail("will@gmail.com");
+		cliente2.setNome("Angela");
+		p_J.setCnpj("654321");
 		p_FDao.update(p_F, cliente1);
+		p_JDao.update(p_J, cliente2);
 		System.out.println("Update complete!");
 		
 	}
