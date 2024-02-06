@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,6 @@ import model.dao.ProcessoDao;
 import model.entities.Advogado;
 import model.entities.Cliente;
 import model.entities.Parte_Processo;
-import model.entities.Pessoa_Fisica;
 import model.entities.Processo;
 import model.entities.Tribunal;
 import model.entities.Usuario;
@@ -31,7 +31,64 @@ public class ProcessoJDBC implements ProcessoDao {
 
 	@Override
 	public void insert(Processo obj) {
+		PreparedStatement stmtProcesso = null;
+		try {
+			conn.setAutoCommit(false); // Desativa o modo de auto-commit
 
+			// Inserir processo
+			String sqlProcesso = "INSERT INTO processo (numero_Processo, data_De_Abertura, tipo, status_Processo, juiz, descricao, honorarios, custos, "
+					+ "cliente_Id, advogado_Id, partes, tribunal, usuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			stmtProcesso = conn.prepareStatement(sqlProcesso, Statement.RETURN_GENERATED_KEYS);
+			stmtProcesso.setString(1, obj.getNumero_Processo());
+			stmtProcesso.setDate(2, new java.sql.Date(obj.getData_De_Abertura().getTime()));
+			stmtProcesso.setString(3, obj.getTipo());
+			stmtProcesso.setString(4, obj.getStatus().name());
+			stmtProcesso.setString(5, obj.getJuiz());
+			stmtProcesso.setString(6, obj.getDescricao());
+			stmtProcesso.setDouble(7, obj.getHonorarios());
+			stmtProcesso.setDouble(8, obj.getCustos());
+			stmtProcesso.setInt(9, obj.getCliente_Id().getId());
+			stmtProcesso.setInt(10, obj.getAdvogado_Id().getId());
+			stmtProcesso.setInt(11, obj.getPartes().getId());
+			stmtProcesso.setInt(12, obj.getTribunal().getId());
+			stmtProcesso.setInt(13, obj.getUsuario().getId());
+			int affectedRows = stmtProcesso.executeUpdate();
+
+			// Recuperar o ID do processo inserido
+			int processoId = -1;
+			if (affectedRows > 0) {
+				ResultSet generatedKeys = stmtProcesso.getGeneratedKeys();
+				if (generatedKeys.next()) {
+					processoId = generatedKeys.getInt(1);
+				}
+			} else {
+				throw new SQLException("Falha ao inserir processo, nenhum registro afetado.");
+			}
+
+			// Confirma a transação
+			conn.commit();
+
+			obj.setId(processoId);
+		} catch (SQLException e) {
+			// Em caso de erro, desfaz a transação
+			try {
+				if (conn != null) {
+					conn.rollback();
+				}
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stmtProcesso != null) {
+					stmtProcesso.close();
+				}
+				conn.setAutoCommit(true); // Restaura o modo de auto-commit
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
@@ -110,7 +167,7 @@ public class ProcessoJDBC implements ProcessoDao {
 		obj.setHonorarios(rs.getDouble("honorarios"));
 		obj.setCustos(rs.getDouble("custos"));
 		obj.setCliente_Id(cliente);
-		obj.setAdvogados(advogado);
+		obj.setAdvogado_Id(advogado);
 		obj.setPartes(parte);
 		obj.setTribunal(tribunal);
 		obj.setUsuario(usuario);
@@ -159,13 +216,12 @@ public class ProcessoJDBC implements ProcessoDao {
 		try {
 			st = conn.prepareStatement(
 					"SELECT processo.*, cliente.nome as Nome_Do_Cliente, advogado.nome as Nome_Do_Advogado, "
-					+ "parte_processo.nome as Nome_Da_Parte, tribunal.nome as Tribunal, usuario.login as Usuário "
-					+ "FROM processo " + "INNER JOIN cliente ON processo.cliente_Id = cliente.id "
-					+ "INNER JOIN advogado ON processo.advogado_Id = advogado.id "
-					+ "INNER JOIN parte_processo ON processo.partes = parte_processo.id "
-					+ "INNER JOIN tribunal ON processo.tribunal = tribunal.id "
-					+ "INNER JOIN usuario ON processo.usuario = usuario.id " 
-					+ "ORDER BY tipo");
+							+ "parte_processo.nome as Nome_Da_Parte, tribunal.nome as Tribunal, usuario.login as Usuário "
+							+ "FROM processo " + "INNER JOIN cliente ON processo.cliente_Id = cliente.id "
+							+ "INNER JOIN advogado ON processo.advogado_Id = advogado.id "
+							+ "INNER JOIN parte_processo ON processo.partes = parte_processo.id "
+							+ "INNER JOIN tribunal ON processo.tribunal = tribunal.id "
+							+ "INNER JOIN usuario ON processo.usuario = usuario.id " + "ORDER BY tipo");
 
 			rs = st.executeQuery();
 
@@ -188,22 +244,22 @@ public class ProcessoJDBC implements ProcessoDao {
 					cliente = instantiateCliente(rs);
 					mapCli.put(rs.getInt("cliente_Id"), cliente);
 				}
-				
+
 				if (advogado == null) {
 					advogado = instantiateAdvogado(rs);
 					mapAdv.put(rs.getInt("advogado_Id"), advogado);
 				}
-				
+
 				if (partes == null) {
 					partes = instantiatePartes(rs);
 					mapPar.put(rs.getInt("partes"), partes);
 				}
-				
+
 				if (tribunal == null) {
 					tribunal = instantiateTribunal(rs);
 					mapTri.put(rs.getInt("tribunal"), tribunal);
 				}
-				
+
 				if (usuario == null) {
 					usuario = instantiateUsuario(rs);
 					mapUser.put(rs.getInt("usuario"), usuario);

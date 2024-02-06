@@ -133,11 +133,11 @@ public class Processo implements Serializable {
 		this.cliente_Id = cliente_Id;
 	}
 
-	public Advogado getAdvogados() {
+	public Advogado getAdvogado_Id() {
 		return advogado_Id;
 	}
 
-	public void setAdvogados(Advogado advogado_Id) {
+	public void setAdvogado_Id(Advogado advogado_Id) {
 		this.advogado_Id = advogado_Id;
 	}
 
@@ -186,7 +186,7 @@ public class Processo implements Serializable {
 	public String toString() {
 		return "Processo [id=" + id + ", numero_Processo=" + numero_Processo + ", data_De_Abertura=" + data_De_Abertura
 				+ ", tipo=" + tipo + ", status=" + status_Processo + ", juiz=" + juiz + ", descricao=" + descricao
-				+ ", honorarios=" + honorarios + ", custos=" + custos + ", cliente_Id=" + cliente_Id + ", advogados="
+				+ ", honorarios=" + honorarios + ", custos=" + custos + ", cliente_Id=" + cliente_Id + ", advogado_Id="
 				+ advogado_Id + ", partes=" + parte + ", tribunal=" + tribunal + ", usuario=" + usuario + "]";
 	}
 	
