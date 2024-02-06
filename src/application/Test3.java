@@ -54,6 +54,16 @@ public class Test3 {
 		
 		pDao.insert(p);
 		System.out.println("Inserted! New id =" + p.getId());
+		
+		System.out.println("=== TEST 5: update ====");
+		
+		processo = pDao.findById(1);
+		
+		processo.setDescricao("Alterado!");
+		
+		pDao.update(processo);
+		
+		System.out.println("Update complete!");
 	}
 
 }

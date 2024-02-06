@@ -93,7 +93,56 @@ public class ProcessoJDBC implements ProcessoDao {
 
 	@Override
 	public void update(Processo obj) {
+		PreparedStatement stmtProcesso = null;
+		try {
+		    conn.setAutoCommit(false); // Desativa o modo de auto-commit
 
+		    // Update pessoa física
+		    String sqlProcesso = "UPDATE processo SET numero_Processo = ?, data_De_Abertura = ?, "
+		    		+ "tipo = ?, status_Processo = ?, juiz = ?, descricao = ?, honorarios = ?, custos = ?, "
+		    		+ "cliente_Id = ?, advogado_Id = ?, partes = ?, tribunal = ?, usuario = ? "
+		    		+ "WHERE id = ?";
+		    stmtProcesso = conn.prepareStatement(sqlProcesso);
+		    stmtProcesso.setString(1, obj.getNumero_Processo());
+		    stmtProcesso.setDate(2, new java.sql.Date(obj.getData_De_Abertura().getTime()));
+		    stmtProcesso.setString(3, obj.getTipo());
+		    stmtProcesso.setString(4, obj.getStatus().name());
+		    stmtProcesso.setString(5, obj.getJuiz());
+		    stmtProcesso.setString(6, obj.getDescricao());
+		    stmtProcesso.setDouble(7, obj.getHonorarios());
+		    stmtProcesso.setDouble(8, obj.getCustos());
+		    stmtProcesso.setInt(9, obj.getCliente_Id().getId());
+			stmtProcesso.setInt(10, obj.getAdvogado_Id().getId());
+			stmtProcesso.setInt(11, obj.getPartes().getId());
+			stmtProcesso.setInt(12, obj.getTribunal().getId());
+			stmtProcesso.setInt(13, obj.getUsuario().getId());
+			stmtProcesso.setInt(14, obj.getId());
+		    int affectedRows1 = stmtProcesso.executeUpdate();
+
+		    // Confirma a transação
+		    conn.commit();
+		} catch (SQLException e) {
+		    // Em caso de erro, desfaz a transação
+		    try {
+		        if (conn != null) {
+		            conn.rollback();
+		        }
+		    } catch (SQLException ex) {
+		        ex.printStackTrace();
+		    }
+		    e.printStackTrace();
+		} finally {
+		    try {
+		        if (stmtProcesso != null) {
+		            stmtProcesso.close();
+		        }
+		        conn.setAutoCommit(true); // Restaura o modo de auto-commit
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		}
+		
+		
 	}
 
 	@Override
