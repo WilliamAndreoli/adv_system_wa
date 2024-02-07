@@ -14,20 +14,20 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="473.0" prefWidth="744.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="473.0" prefWidth="744.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainViewController">
    <content>
-      <VBox prefHeight="373.0" prefWidth="649.0" id="vbox">
+      <VBox id="vbox" prefHeight="373.0" prefWidth="649.0">
          <children>
             <MenuBar>
                <menus>
                   <Menu mnemonicParsing="false" text="Help">
                     <items>
-                      <MenuItem mnemonicParsing="false" text="Action 1" />
+                      <MenuItem fx:id="menuItemHelp" mnemonicParsing="false" onAction="#onMenuItemHelpAction" text="Help" />
                     </items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="About">
                     <items>
-                      <MenuItem mnemonicParsing="false" text="Action 1" />
+                      <MenuItem fx:id="menuItemAbout" mnemonicParsing="false" onAction="#onMenuItemAboutAction" text="About" />
                     </items>
                   </Menu>
                </menus>
@@ -49,8 +49,8 @@
                <children>
                   <ButtonBar prefHeight="40.0" prefWidth="200.0">
                     <buttons>
-                      <Button mnemonicParsing="false" text="Registrar" />
-                        <Button mnemonicParsing="false" text="Login" />
+                      <Button fx:id="btRegistrar" mnemonicParsing="false" onAction="#onBtRegistrarAction" text="Registrar" />
+                        <Button fx:id="btLogin" mnemonicParsing="false" onAction="#onBtLoginAction" text="Login" />
                     </buttons>
                      <HBox.margin>
                         <Insets bottom="10.0" right="50.0" top="10.0" />
@@ -61,10 +61,10 @@
                   </ButtonBar>
                   <ButtonBar prefHeight="40.0" prefWidth="200.0">
                     <buttons>
-                      <Button mnemonicParsing="false" text="Sair" />
+                      <Button fx:id="btSair" mnemonicParsing="false" onAction="#onBtSairAction" text="Sair" />
                     </buttons>
                      <HBox.margin>
-                        <Insets bottom="10.0" left="202.0" top="10.0" />
+                        <Insets bottom="10.0" left="270.0" top="10.0" />
                      </HBox.margin>
                   </ButtonBar>
                </children>
