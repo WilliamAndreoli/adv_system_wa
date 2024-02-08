@@ -6,11 +6,11 @@ import java.util.ResourceBundle;
 
 import application.Main;
 import gui.util.Alerts;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -21,91 +21,65 @@ import javafx.scene.layout.VBox;
 
 public class MainViewController implements Initializable {
 
-	@FXML
-	private MenuItem menuItemHelp;
-	
-	@FXML
-	private MenuItem menuItemAbout;
-	
-	@FXML
-	private Button btRegistrar;
-	
-	@FXML
-	private Button btLogin;
-	
-	@FXML
-	private Button btSair;
-	
-	@FXML
-	public void onMenuItemHelpAction() {
-		System.out.println("onMenuItemHelpAction");
-	}
-	
-	@FXML
-	public void onMenuItemAboutAction() {
-		loadView("/gui/About.fxml");
-	}
-	
-	@FXML
-	public void onBtRegistrarAction(ActionEvent event) {
-		loadUsuarioFormView("/gui/UsuarioForm.fxml");
-	}
-	
-	@FXML
-	public void onBtLoginAction() {
-		loadView("/gui/LoginForm.fxml");
-	}
-	
-	@FXML
-	public void onBtSairAction() {
-		System.out.println("onBtSairAction");
-	}
-	
-	@Override
-	public void initialize(URL uri, ResourceBundle rb) {
-	
-		
-	}
-	
-	private synchronized void loadView(String absoluteName) {
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
-			VBox newVBox = loader.load();
-			
-			Scene mainScene = Main.getMainScene();
-			
-			VBox mainVBox = (VBox) ((ScrollPane) mainScene.getRoot()).getContent();
-			
-			Node mainMenu = mainVBox.getChildren().get(0);
-			mainVBox.getChildren().clear();
-			mainVBox.getChildren().add(mainMenu);
-			mainVBox.getChildren().addAll(newVBox.getChildren());
-			
-		} catch (IOException e) {
-			Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
-		}
-	}
-	
-	private synchronized void loadUsuarioFormView(String absoluteName) {
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
-			AnchorPane newAnchorPane = loader.load();
-			VBox newVBox = new VBox(newAnchorPane);
+    @FXML
+    private MenuItem menuItemHelp;
 
-			
-			Scene mainScene = Main.getMainScene();
-			
-			VBox mainVBox = (VBox) ((ScrollPane) mainScene.getRoot()).getContent();
-			
-			Node mainMenu = mainVBox.getChildren().get(0);
-			mainVBox.getChildren().clear();
-			mainVBox.getChildren().add(mainMenu);
-			mainVBox.getChildren().addAll(newVBox.getChildren());
-			
-		} catch (IOException e) {
-			Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
-		}
-	}
-	
-	
+    @FXML
+    private MenuItem menuItemAbout;
+
+    @FXML
+    private Button btRegistrar;
+
+    @FXML
+    private Button btLogin;
+
+    @FXML
+    private Button btSair;
+
+    @Override
+    public void initialize(URL uri, ResourceBundle rb) {
+    }
+
+    @FXML
+    private void onMenuItemHelpAction() {
+        System.out.println("onMenuItemHelpAction");
+    }
+
+    @FXML
+    private void onMenuItemAboutAction() {
+        loadView("/gui/About.fxml");
+    }
+
+    @FXML
+    private void onBtRegistrarAction(ActionEvent event) {
+        loadView("/gui/UsuarioForm.fxml");
+    }
+
+    @FXML
+    private void onBtLoginAction() {
+        loadView("/gui/LoginForm.fxml");
+    }
+
+    @FXML
+    private void onBtSairAction(ActionEvent event) {
+        Platform.exit();
+    }
+
+    private synchronized void loadView(String absoluteName) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
+            AnchorPane newAnchorPane = loader.load();
+            replaceSceneContent(newAnchorPane);
+        } catch (IOException e) {
+            Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
+        }
+    }
+
+    private void replaceSceneContent(AnchorPane newAnchorPane) {
+        Scene mainScene = Main.getMainScene();
+        ScrollPane scrollPane = (ScrollPane) mainScene.getRoot();
+        VBox mainVBox = (VBox) scrollPane.getContent();
+        mainVBox.getChildren().clear();
+        mainVBox.getChildren().add(newAnchorPane);
+    }
 }
