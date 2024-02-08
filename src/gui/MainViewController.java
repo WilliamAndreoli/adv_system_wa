@@ -3,9 +3,11 @@ package gui;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 import application.Main;
 import gui.util.Alerts;
+import gui.util.Utils;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,10 +20,15 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import model.entities.Usuario;
 import model.services.UsuarioService;
 
 public class MainViewController implements Initializable {
 
+	private UsuarioService userService;
+	
     @FXML
     private MenuItem menuItemHelp;
 
@@ -36,6 +43,10 @@ public class MainViewController implements Initializable {
 
     @FXML
     private Button btSair;
+    
+    private void setUsuarioService(UsuarioService service) {
+    	this.userService = service;
+    }
 
     @Override
     public void initialize(URL uri, ResourceBundle rb) {
@@ -43,22 +54,24 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void onMenuItemHelpAction() {
-        loadView("/gui/Help.fxml");
+        loadView("/gui/Help.fxml", x -> {});
     }
 
     @FXML
     private void onMenuItemAboutAction() {
-        loadView("/gui/About.fxml");
+        loadView("/gui/About.fxml", x -> {});
     }
 
     @FXML
     private void onBtRegistrarAction(ActionEvent event) {
-        loadView("/gui/UsuarioForm.fxml");
+        Stage parentStage = Utils.currentStage(event);
+        Usuario obj = new Usuario();
+    	createDialogForm("/gui/UsuarioForm.fxml", obj,  parentStage);
     }
 
     @FXML
     private void onBtLoginAction() {
-        loadView("/gui/LoginForm.fxml");
+        loadView("/gui/LoginForm.fxml", x -> {});
     }
 
     @FXML
@@ -66,34 +79,50 @@ public class MainViewController implements Initializable {
         Platform.exit();
     }
 
-    private synchronized void loadView(String absoluteName) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
-            AnchorPane newAnchorPane = loader.load();
-            replaceSceneContent(newAnchorPane);
-        } catch (IOException e) {
-            Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
-        }
-    }
-    
-    private synchronized void loadView2(String absoluteName) {
+    private synchronized <T> void loadView(String absoluteName, Consumer<T> initializingAction) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
             AnchorPane newAnchorPane = loader.load();
             replaceSceneContent(newAnchorPane);
             
-            UsuarioFormController controller = loader.getController();
-            controller.setUsuarioService(new UsuarioService());
+            T controller = loader.getController();
+            initializingAction.accept(controller);
         } catch (IOException e) {
             Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
         }
     }
-
+    
+   
     private void replaceSceneContent(AnchorPane newAnchorPane) {
         Scene mainScene = Main.getMainScene();
         ScrollPane scrollPane = (ScrollPane) mainScene.getRoot();
         VBox mainVBox = (VBox) scrollPane.getContent();
         mainVBox.getChildren().clear();
         mainVBox.getChildren().add(newAnchorPane);
+    }
+    
+    private <T> void createDialogForm(String absoluteName, Usuario obj, Stage parentStage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
+            AnchorPane pane = loader.load();
+
+            // Criar uma nova cena e definir o pane como sua raiz
+            Scene cena = new Scene(pane);
+            
+            UsuarioFormController controller = loader.getController();
+			controller.setUsuario(obj);
+			controller.setUsuarioService(new UsuarioService());
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Enter Usuario Data");
+            dialogStage.setScene(cena);
+            dialogStage.setResizable(false);
+            dialogStage.initOwner(parentStage);
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.showAndWait();
+        } catch (IOException e) {
+            // Lidar com a exceção
+            Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
+        }
     }
 }
