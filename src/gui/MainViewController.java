@@ -29,6 +29,9 @@ public class MainViewController implements Initializable {
 
 	private UsuarioService userService;
 	
+	@FXML
+	private ScrollPane rootPane;
+	
     @FXML
     private MenuItem menuItemHelp;
 
@@ -50,8 +53,16 @@ public class MainViewController implements Initializable {
 
     @Override
     public void initialize(URL uri, ResourceBundle rb) {
+        // Verifica se a cena do rootPane não é nula
+        if (rootPane.getScene() != null) {
+            // Obtém o palco associado à cena
+            Stage stage = (Stage) rootPane.getScene().getWindow();
+            // Define o evento onHiding para encerrar a aplicação ao fechar a janela
+            stage.setOnHiding(event -> {
+                Platform.exit(); // Encerra a aplicação
+            });
+        }
     }
-
     @FXML
     private void onMenuItemHelpAction() {
         loadView("/gui/Help.fxml", x -> {});
@@ -116,7 +127,7 @@ public class MainViewController implements Initializable {
 			controller.setUsuarioService(new UsuarioService());
 
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Enter Login Data");
+            dialogStage.setTitle("Enter Usuario Data");
             dialogStage.setScene(cena);
             dialogStage.setResizable(false);
             dialogStage.initOwner(parentStage);
@@ -141,7 +152,7 @@ public class MainViewController implements Initializable {
 			controller.setUsuarioService(new UsuarioService());
 
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Enter Usuario Data");
+            dialogStage.setTitle("Enter Login Data");
             dialogStage.setScene(cena);
             dialogStage.setResizable(false);
             dialogStage.initOwner(parentStage);
