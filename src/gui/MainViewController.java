@@ -42,7 +42,7 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void onMenuItemHelpAction() {
-        System.out.println("onMenuItemHelpAction");
+        loadView("/gui/Help.fxml");
     }
 
     @FXML

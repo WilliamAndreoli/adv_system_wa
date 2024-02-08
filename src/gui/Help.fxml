@@ -10,7 +10,7 @@
    <children>
       <VBox prefHeight="200.0" prefWidth="597.0">
          <children>
-            <Label text="About">
+            <Label text="Help">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -21,7 +21,7 @@
                   <Insets left="10.0" top="5.0" />
                </padding>
             </Label>
-            <Label text="Software criado por William Andreoli">
+            <Label text="Em caso de duvidas entre em contato">
                <font>
                   <Font size="14.0" />
                </font>
@@ -29,13 +29,10 @@
                   <Insets left="10.0" top="5.0" />
                </padding>
             </Label>
-            <Label text="Todos os direitos reservados!">
+            <Label text="Email: willandreoli33@gmail.com">
                <padding>
                   <Insets left="10.0" top="5.0" />
                </padding>
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
             </Label>
          </children>
       </VBox>
