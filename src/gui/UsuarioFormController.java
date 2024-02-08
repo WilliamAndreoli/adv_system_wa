@@ -8,9 +8,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import model.entities.Usuario;
+import model.services.UsuarioService;
 
 public class UsuarioFormController implements Initializable {
 
+	private UsuarioService service;
+	
+	private Usuario entity;
+	
 	@FXML
 	private TextField txtNovoLogin;
 	
@@ -25,13 +31,14 @@ public class UsuarioFormController implements Initializable {
 	
 	@FXML
 	private Label labelError;
-
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		
-		
+	
+	public void setUsuarioService (UsuarioService service) {
+		this.service = service;
 	}
 	
+	public void setUsuario(Usuario entity) {
+		this.entity = entity;
+	}
 	
 	@FXML
     private void onBtSalvarAction() {
@@ -42,5 +49,19 @@ public class UsuarioFormController implements Initializable {
     private void onBtCancelAction() {
         System.out.println("onBtCancelAction");
     }
+	
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		
+		
+	}
+	public void updateFormData() {
+		if (entity == null) {
+			throw new IllegalStateException("Entity was null");
+		}
+		Usuario usuario = new Usuario();
+		txtNovoLogin.setText(entity.getLogin());
+		txtNovaSenha.setText(entity.getSenha());
+	}
 	
 }

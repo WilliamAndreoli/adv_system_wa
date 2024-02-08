@@ -18,6 +18,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import model.services.UsuarioService;
 
 public class MainViewController implements Initializable {
 
@@ -70,6 +71,19 @@ public class MainViewController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
             AnchorPane newAnchorPane = loader.load();
             replaceSceneContent(newAnchorPane);
+        } catch (IOException e) {
+            Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
+        }
+    }
+    
+    private synchronized void loadView2(String absoluteName) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
+            AnchorPane newAnchorPane = loader.load();
+            replaceSceneContent(newAnchorPane);
+            
+            UsuarioFormController controller = loader.getController();
+            controller.setUsuarioService(new UsuarioService());
         } catch (IOException e) {
             Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
         }
