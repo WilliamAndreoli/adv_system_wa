@@ -23,4 +23,8 @@ public class UsuarioService {
 		}
 	}
 	
+	public void authenticateUser(Usuario obj) {
+		dao.authenticateUser(obj);
+	}
+	
 }

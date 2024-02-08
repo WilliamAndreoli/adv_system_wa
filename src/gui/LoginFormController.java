@@ -17,20 +17,20 @@ import javafx.stage.Stage;
 import model.entities.Usuario;
 import model.services.UsuarioService;
 
-public class UsuarioFormController implements Initializable {
+public class LoginFormController implements Initializable {
 
 	private UsuarioService service;
 	
 	private Usuario entity;
 	
 	@FXML
-	private TextField txtNovoLogin;
+	private TextField txtLogin;
 	
 	@FXML
-	private TextField txtNovaSenha;
+	private TextField txtSenha;
 	
 	@FXML
-	private Button btSalvar;
+	private Button btEntrar;
 	
 	@FXML
 	private Button btCancel;
@@ -47,7 +47,7 @@ public class UsuarioFormController implements Initializable {
 	}
 	
 	@FXML
-    private void onBtSalvarAction(ActionEvent event) {
+    private void onBtEntrarAction(ActionEvent event) {
 		if (entity == null) {
 			throw new IllegalStateException("Entity was null!");
 		}
@@ -56,7 +56,8 @@ public class UsuarioFormController implements Initializable {
 		}
 		try {
 			entity = getFormData();
-			service.saveOrUpdate(entity);
+			service.authenticateUser(entity);
+			System.out.println("Autenticado!");
 			Utils.currentStage(event).close();
 		}
 		catch (DbException e) {
@@ -67,8 +68,8 @@ public class UsuarioFormController implements Initializable {
 	private Usuario getFormData() {
 		Usuario obj = new Usuario();
 		
-		obj.setLogin(txtNovoLogin.getText());
-		obj.setSenha(txtNovaSenha.getText());
+		obj.setLogin(txtLogin.getText());
+		obj.setSenha(txtSenha.getText());
 		
 		return obj;
 	}

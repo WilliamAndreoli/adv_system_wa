@@ -70,8 +70,10 @@ public class MainViewController implements Initializable {
     }
 
     @FXML
-    private void onBtLoginAction() {
-        loadView("/gui/LoginForm.fxml", x -> {});
+    private void onBtLoginAction(ActionEvent event) {
+    	Stage parentStage = Utils.currentStage(event);
+    	Usuario obj = new Usuario();
+        createDialogForm2("/gui/LoginForm.fxml", obj, parentStage);
     }
 
     @FXML
@@ -110,6 +112,31 @@ public class MainViewController implements Initializable {
             Scene cena = new Scene(pane);
             
             UsuarioFormController controller = loader.getController();
+			controller.setUsuario(obj);
+			controller.setUsuarioService(new UsuarioService());
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Enter Login Data");
+            dialogStage.setScene(cena);
+            dialogStage.setResizable(false);
+            dialogStage.initOwner(parentStage);
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.showAndWait();
+        } catch (IOException e) {
+            // Lidar com a exceção
+            Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
+        }
+    }
+    
+    private <T> void createDialogForm2(String absoluteName, Usuario obj, Stage parentStage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
+            AnchorPane pane = loader.load();
+
+            // Criar uma nova cena e definir o pane como sua raiz
+            Scene cena = new Scene(pane);
+            
+            LoginFormController controller = loader.getController();
 			controller.setUsuario(obj);
 			controller.setUsuarioService(new UsuarioService());
 
