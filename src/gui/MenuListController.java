@@ -25,7 +25,7 @@ public class MenuListController implements Initializable {
 
 	@FXML
 	private VBox vBox;
-	
+
 	@FXML
 	private Button btProcessos;
 
@@ -37,7 +37,10 @@ public class MenuListController implements Initializable {
 
 	@FXML
 	public void onBtProcessosAction() {
-		loadView("/gui/ProcessosList.fxml", x -> {});
+		loadView("/gui/ProcessosList.fxml", (ProcessosListController controller) -> {
+			controller.setProcessosService(new ProcessosService());
+			controller.updateTableView();
+		});
 	}
 
 	@FXML
@@ -56,12 +59,8 @@ public class MenuListController implements Initializable {
 			AnchorPane newAnchorPane = loader.load();
 			replaceSceneContent(newAnchorPane);
 
-			ProcessosListController controller = loader.getController();
-			controller.setProcessosService(new ProcessosService());
-			controller.updateTableView();
-			
-			T controller1 = loader.getController();
-			initializingAction.accept(controller1);
+			T controller = loader.getController();
+			initializingAction.accept(controller);
 		} catch (IOException e) {
 			Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
 		}
@@ -79,24 +78,24 @@ public class MenuListController implements Initializable {
 	public void initialize(URL uri, ResourceBundle bd) {
 		initializeNodes();
 	}
-	
+
 	private void initializeNodes() {
 		System.out.println("initializeNodes() chamado.");
-		
+
 		Platform.runLater(() -> {
-		    Scene scene = btProcessos.getScene();
-		    if (scene != null) {
-		        Window window = scene.getWindow();
-		        if (window instanceof Stage) {
-		            Stage stage = (Stage) window;
-		            vBox.prefHeightProperty().bind(stage.heightProperty());
-		            vBox.prefWidthProperty().bind(stage.widthProperty());
-		        } else {
-		            System.out.println("A janela atual não é um Stage.");
-		        }
-		    } else {
-		        System.out.println("A cena ainda não está carregada.");
-		    }
+			Scene scene = btProcessos.getScene();
+			if (scene != null) {
+				Window window = scene.getWindow();
+				if (window instanceof Stage) {
+					Stage stage = (Stage) window;
+					vBox.prefHeightProperty().bind(stage.heightProperty());
+					vBox.prefWidthProperty().bind(stage.widthProperty());
+				} else {
+					System.out.println("A janela atual não é um Stage.");
+				}
+			} else {
+				System.out.println("A cena ainda não está carregada.");
+			}
 		});
 	}
 }
