@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="293.0" prefWidth="276.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LoginFormController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="293.0" prefWidth="276.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MenuListController">
    <children>
       <VBox layoutY="-1.0" prefHeight="296.0" prefWidth="275.0">
          <children>
@@ -27,17 +27,17 @@
                   <Insets left="10.0" top="5.0" />
                </padding>
             </Label>
-            <Button mnemonicParsing="false" text="Processos">
+            <Button fx:id="btProcessos" mnemonicParsing="false" onAction="#onBtProcessosAction" text="Processos">
                <VBox.margin>
                   <Insets left="10.0" top="10.0" />
                </VBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="Consultas">
+            <Button fx:id="btConsultas" mnemonicParsing="false" onAction="#onBtConsultasAction" text="Consultas">
                <VBox.margin>
                   <Insets left="10.0" top="10.0" />
                </VBox.margin>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="69.0" text="Clientes">
+            <Button fx:id="btClientes" mnemonicParsing="false" onAction="#onBtClientesAction" prefHeight="25.0" prefWidth="69.0" text="Clientes">
                <VBox.margin>
                   <Insets left="10.0" top="10.0" />
                </VBox.margin>
