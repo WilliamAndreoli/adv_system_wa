@@ -57,6 +57,11 @@ public class UsuarioFormController implements Initializable {
 		try {
 			entity = getFormData();
 			service.saveOrUpdate(entity);
+			
+			if (entity != null) {
+				Alerts.showAlert("Registrado!", null, "Usuário salvo com sucesso!", AlertType.CONFIRMATION);
+			}
+			
 			Utils.currentStage(event).close();
 		}
 		catch (DbException e) {
