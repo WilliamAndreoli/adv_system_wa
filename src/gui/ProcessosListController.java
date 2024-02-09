@@ -112,10 +112,6 @@ public class ProcessosListController implements Initializable {
 			// Criar uma nova cena e definir o pane como sua raiz
 			Scene cena = new Scene(pane);
 
-			ProcessoFormController controller = loader.getController();
-			controller.setProcesso(obj);
-			controller.setProcessoService(new UsuarioService());
-
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("Enter Processo Data");
 			dialogStage.setScene(cena);
