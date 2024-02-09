@@ -9,7 +9,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="293.0" prefWidth="276.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MenuListController">
    <children>
-      <VBox layoutY="-1.0" prefHeight="296.0" prefWidth="275.0">
+      <VBox fx:id="vBox" layoutY="-1.0" prefHeight="296.0" prefWidth="275.0">
          <children>
             <Label text="Advocacia Wendt">
                <font>

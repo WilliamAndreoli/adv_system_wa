@@ -2,9 +2,12 @@ package gui;
 
 import java.net.URL;
 import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -21,10 +24,13 @@ import model.entities.Parte_Processo;
 import model.entities.Processo;
 import model.entities.Tribunal;
 import model.entities.Usuario;
+import model.services.ProcessosService;
 import model.util.Status;
 
 public class ProcessosListController implements Initializable {
 
+	private ProcessosService service;
+	
 	@FXML
 	private VBox vBox;
 	
@@ -76,6 +82,12 @@ public class ProcessosListController implements Initializable {
 	@FXML
 	private Button btNovo;
 	
+	private ObservableList<Processo> obsList;
+	
+	public void setProcessosService(ProcessosService service) {
+		this.service = service;
+	}
+	
 	@FXML
 	public void obBtNovoAction() {
 		System.out.println("onBtNovoAction");
@@ -95,13 +107,13 @@ public class ProcessosListController implements Initializable {
 		tableColumnNumero.setCellValueFactory(new PropertyValueFactory<>("numero_Processo"));
 		tableColumnDataAbertura.setCellValueFactory(new PropertyValueFactory<>("data_De_Abertura"));
 		tableColumnTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
-		tableColumnStatus.setCellValueFactory(new PropertyValueFactory<>("status_Processo"));
+		tableColumnStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 		tableColumnJuiz.setCellValueFactory(new PropertyValueFactory<>("juiz"));
 		tableColumnDescricao.setCellValueFactory(new PropertyValueFactory<>("descricao"));
 		tableColumnHonorarios.setCellValueFactory(new PropertyValueFactory<>("honorarios"));
 		tableColumnCustos.setCellValueFactory(new PropertyValueFactory<>("custos"));
-		tableColumnCliente.setCellValueFactory(new PropertyValueFactory<>("cliente"));
-		tableColumnAdvogado.setCellValueFactory(new PropertyValueFactory<>("advogado"));
+		tableColumnCliente.setCellValueFactory(new PropertyValueFactory<>("cliente_Id"));
+		tableColumnAdvogado.setCellValueFactory(new PropertyValueFactory<>("advogado_Id"));
 		tableColumnParte.setCellValueFactory(new PropertyValueFactory<>("partes"));
 		tableColumnTribunal.setCellValueFactory(new PropertyValueFactory<>("tribunal"));
 		tableColumnUsuario.setCellValueFactory(new PropertyValueFactory<>("usuario"));
@@ -123,6 +135,15 @@ public class ProcessosListController implements Initializable {
 		        System.out.println("A cena ainda não está carregada.");
 		    }
 		});
+	}
+	
+	public void updateTableView() {
+		if (service == null) {
+			throw new IllegalStateException("Service was null");
+		}
+		List<Processo> list = service.findAll();
+		obsList = FXCollections.observableArrayList(list);
+		tableViewProcesso.setItems(obsList);
 	}
 
 }
