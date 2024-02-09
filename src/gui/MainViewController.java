@@ -128,7 +128,7 @@ public class MainViewController implements Initializable {
 		}
 	}
 
-	private <T> void createDialogForm2(String absoluteName, Usuario obj, Stage parentStage) {
+	private void createDialogForm2(String absoluteName, Usuario obj, Stage parentStage) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			AnchorPane pane = loader.load();
