@@ -36,6 +36,7 @@ import model.entities.Parte_Processo;
 import model.entities.Processo;
 import model.entities.Tribunal;
 import model.exceptions.ValidationException;
+import model.services.AdvogadoService;
 import model.services.ClienteService;
 import model.services.ProcessosService;
 import model.util.Status;
@@ -47,6 +48,8 @@ public class ProcessoFormController implements Initializable {
 	private ProcessosService processosService;
 
 	private ClienteService clienteService;
+	
+	private AdvogadoService advogadoService;
 
 	private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 
@@ -98,9 +101,10 @@ public class ProcessoFormController implements Initializable {
 		this.entity = entity;
 	}
 
-	public void setServices(ProcessosService processosService, ClienteService clienteService) {
+	public void setServices(ProcessosService processosService, ClienteService clienteService, AdvogadoService advogadoService) {
 		this.processosService = processosService;
 		this.clienteService = clienteService;
+		this.advogadoService = advogadoService;
 	}
 
 	public void subscribeDataChangeListener(DataChangeListener listener) {
@@ -184,8 +188,7 @@ public class ProcessoFormController implements Initializable {
 
 		if (entity.getStatus() == null) {
 			comboBoxStatus_Processo.getSelectionModel().selectFirst();
-		}
-		else {
+		} else {
 			comboBoxStatus_Processo.setValue(entity.getStatus());
 		}
 
@@ -220,20 +223,27 @@ public class ProcessoFormController implements Initializable {
 	}
 
 	public void loadAssociatedObjects() {
-        if (clienteService == null) {
-            throw new IllegalStateException("ClienteService was null");
-        }
+		if (clienteService == null) {
+			throw new IllegalStateException("ClienteService was null");
+		}
+		if (advogadoService == null) {
+			throw new IllegalStateException("AdvogadoService was null");
+		}
 
-        // Carregar clientes
-        List<Cliente> clienteList = clienteService.findAll();
-        ObservableList<Cliente> clienteObsList = FXCollections.observableArrayList(clienteList);
-        comboBoxCliente.setItems(clienteObsList);
+		// Carregar clientes
+		List<Cliente> clienteList = clienteService.findAll();
+		ObservableList<Cliente> clienteObsList = FXCollections.observableArrayList(clienteList);
+		comboBoxCliente.setItems(clienteObsList);
 
-        // Carregar status
-        ObservableList<Status> statusObsList = FXCollections.observableArrayList(Status.values());
-        comboBoxStatus_Processo.setItems(statusObsList);
-    }
+		// Carregar advogados
+		List<Advogado> advogadoList = advogadoService.findAll();
+		ObservableList<Advogado> advogadoObsList = FXCollections.observableArrayList(advogadoList);
+		comboBoxAdvogado.setItems(advogadoObsList);
 
+		// Carregar status
+		ObservableList<Status> statusObsList = FXCollections.observableArrayList(Status.values());
+		comboBoxStatus_Processo.setItems(statusObsList);
+	}
 
 	private void initializeComboBoxStatus() {
 		Callback<ListView<Status>, ListCell<Status>> factory = lv -> new ListCell<Status>() {
@@ -258,6 +268,18 @@ public class ProcessoFormController implements Initializable {
 		comboBoxCliente.setCellFactory(factory);
 		comboBoxCliente.setButtonCell(factory.call(null));
 	}
+	
+	private void initializeComboBoxAdvogado() {
+		Callback<ListView<Advogado>, ListCell<Advogado>> factory = lv -> new ListCell<Advogado>() {
+			@Override
+			protected void updateItem(Advogado item, boolean empty) {
+				super.updateItem(item, empty);
+				setText(empty ? "" : item.getNome());
+			}
+		};
+		comboBoxAdvogado.setCellFactory(factory);
+		comboBoxAdvogado.setButtonCell(factory.call(null));
+	}
 
 	@Override
 	public void initialize(URL uri, ResourceBundle bd) {
@@ -273,6 +295,7 @@ public class ProcessoFormController implements Initializable {
 		Constraints.setTextFieldDouble(txtCustos);
 		initializeComboBoxCliente();
 		initializeComboBoxStatus();
+		initializeComboBoxAdvogado();
 	}
 
 }
