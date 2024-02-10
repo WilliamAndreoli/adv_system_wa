@@ -37,7 +37,7 @@ import model.services.AdvogadoService;
 import model.services.ClienteService;
 import model.services.Parte_ProcessoService;
 import model.services.ProcessosService;
-import model.services.UsuarioService;
+import model.services.TribunalService;
 import model.util.Status;
 
 public class ProcessosListController implements Initializable, DataChangeListener {
@@ -118,7 +118,7 @@ public class ProcessosListController implements Initializable, DataChangeListene
 
 			ProcessoFormController controller = loader.getController();
 			controller.setProcesso(obj);
-			controller.setServices(new ProcessosService(), new ClienteService(), new AdvogadoService(), new Parte_ProcessoService());
+			controller.setServices(new ProcessosService(), new ClienteService(), new AdvogadoService(), new Parte_ProcessoService(), new TribunalService());
 			controller.loadAssociatedObjects();
 			controller.subscribeDataChangeListener(this);
 			controller.updateFormData();
