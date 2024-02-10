@@ -62,7 +62,7 @@
             <TextField fx:id="txtNumero_Processo" GridPane.columnIndex="1" />
             <DatePicker fx:id="dpData_De_Abertura" prefHeight="25.0" prefWidth="242.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="txtTipo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <ComboBox fx:id="comBoxStatus_Processo" prefHeight="25.0" prefWidth="249.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <ComboBox fx:id="comboBoxStatus_Processo" prefHeight="25.0" prefWidth="249.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField fx:id="txtJuiz" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <TextArea fx:id="txtDescricao" prefHeight="54.0" prefWidth="243.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <TextField fx:id="txtHonorarios" GridPane.columnIndex="1" GridPane.rowIndex="6" />

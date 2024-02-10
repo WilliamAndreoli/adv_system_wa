@@ -33,6 +33,7 @@ import model.entities.Parte_Processo;
 import model.entities.Processo;
 import model.entities.Tribunal;
 import model.entities.Usuario;
+import model.services.ClienteService;
 import model.services.ProcessosService;
 import model.util.Status;
 
@@ -114,7 +115,8 @@ public class ProcessosListController implements Initializable, DataChangeListene
 
 			ProcessoFormController controller = loader.getController();
 			controller.setProcesso(obj);
-			controller.setProcessosService(new ProcessosService());
+			controller.setServices(new ProcessosService(), new ClienteService());
+			controller.loadAssociatedObjects();
 			controller.subscribeDataChangeListener(this);
 			controller.updateFormData();
 
