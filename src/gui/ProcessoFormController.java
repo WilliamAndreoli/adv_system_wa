@@ -38,6 +38,7 @@ import model.entities.Tribunal;
 import model.exceptions.ValidationException;
 import model.services.AdvogadoService;
 import model.services.ClienteService;
+import model.services.Parte_ProcessoService;
 import model.services.ProcessosService;
 import model.util.Status;
 
@@ -48,8 +49,10 @@ public class ProcessoFormController implements Initializable {
 	private ProcessosService processosService;
 
 	private ClienteService clienteService;
-	
+
 	private AdvogadoService advogadoService;
+
+	private Parte_ProcessoService parte_ProcessoService;
 
 	private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 
@@ -101,10 +104,12 @@ public class ProcessoFormController implements Initializable {
 		this.entity = entity;
 	}
 
-	public void setServices(ProcessosService processosService, ClienteService clienteService, AdvogadoService advogadoService) {
+	public void setServices(ProcessosService processosService, ClienteService clienteService,
+			AdvogadoService advogadoService, Parte_ProcessoService parte_ProcessoService) {
 		this.processosService = processosService;
 		this.clienteService = clienteService;
 		this.advogadoService = advogadoService;
+		this.parte_ProcessoService = parte_ProcessoService;
 	}
 
 	public void subscribeDataChangeListener(DataChangeListener listener) {
@@ -240,6 +245,11 @@ public class ProcessoFormController implements Initializable {
 		ObservableList<Advogado> advogadoObsList = FXCollections.observableArrayList(advogadoList);
 		comboBoxAdvogado.setItems(advogadoObsList);
 
+		// Carregar partes
+		List<Parte_Processo> partesList = parte_ProcessoService.findAll();
+		ObservableList<Parte_Processo> parteObsList = FXCollections.observableArrayList(partesList);
+		comboBoxParte.setItems(parteObsList);
+
 		// Carregar status
 		ObservableList<Status> statusObsList = FXCollections.observableArrayList(Status.values());
 		comboBoxStatus_Processo.setItems(statusObsList);
@@ -268,7 +278,7 @@ public class ProcessoFormController implements Initializable {
 		comboBoxCliente.setCellFactory(factory);
 		comboBoxCliente.setButtonCell(factory.call(null));
 	}
-	
+
 	private void initializeComboBoxAdvogado() {
 		Callback<ListView<Advogado>, ListCell<Advogado>> factory = lv -> new ListCell<Advogado>() {
 			@Override
@@ -279,6 +289,18 @@ public class ProcessoFormController implements Initializable {
 		};
 		comboBoxAdvogado.setCellFactory(factory);
 		comboBoxAdvogado.setButtonCell(factory.call(null));
+	}
+	
+	private void initializeComboBoxParte() {
+		Callback<ListView<Parte_Processo>, ListCell<Parte_Processo>> factory = lv -> new ListCell<Parte_Processo>() {
+			@Override
+			protected void updateItem(Parte_Processo item, boolean empty) {
+				super.updateItem(item, empty);
+				setText(empty ? "" : item.getNome());
+			}
+		};
+		comboBoxParte.setCellFactory(factory);
+		comboBoxParte.setButtonCell(factory.call(null));
 	}
 
 	@Override
@@ -296,6 +318,7 @@ public class ProcessoFormController implements Initializable {
 		initializeComboBoxCliente();
 		initializeComboBoxStatus();
 		initializeComboBoxAdvogado();
+		initializeComboBoxParte();
 	}
 
 }
