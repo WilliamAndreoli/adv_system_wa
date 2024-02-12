@@ -13,6 +13,7 @@ import db.DB;
 import db.DbException;
 import model.dao.UsuarioDao;
 import model.entities.Usuario;
+import model.exceptions.ValidationException;
 
 public class UsuarioJDBC implements UsuarioDao {
 
@@ -159,7 +160,7 @@ public class UsuarioJDBC implements UsuarioDao {
 				if (hashedPassword.equals(inputPasswordHash)) {
 					System.out.println("Bem vindo ao sistema");
 				} else {
-					System.out.println("Senha inválida");
+					throw new DbException("Senha inválida");
 				}
 			} else {
 				System.out.println("Usuário não encontrado");
