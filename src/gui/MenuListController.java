@@ -19,6 +19,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import model.services.ClienteService;
 import model.services.ProcessosService;
 
 public class MenuListController implements Initializable {
@@ -50,7 +51,10 @@ public class MenuListController implements Initializable {
 
 	@FXML
 	public void onBtClientesAction() {
-		System.out.println("onBtClientesAction");
+		loadView("/gui/ClientesList.fxml", (ClientesListController controller) -> {
+			controller.setClienteService(new ClienteService());
+			controller.updateTableView();
+		});
 	}
 
 	private synchronized <T> void loadView(String absoluteName, Consumer<T> initializingAction) {
