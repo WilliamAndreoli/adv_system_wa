@@ -134,6 +134,11 @@ public class ProcessoFormController implements Initializable {
 		try {
 			entity = getFormData();
 			processosService.saveOrUpdate(entity);
+			
+			if (entity != null) {
+				Alerts.showAlert("Registrado!", null, "Processo salvo com sucesso!", AlertType.CONFIRMATION);
+			}
+			
 			notifyDataChangeListeners();
 			Utils.currentStage(event).close();
 		} catch (DbException e) {

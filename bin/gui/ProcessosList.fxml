@@ -25,6 +25,7 @@
             <ToolBar prefHeight="40.0" prefWidth="200.0">
               <items>
                 <Button fx:id="btNovo" mnemonicParsing="false" onAction="#obBtNovoAction" text="Novo" />
+                  <Button fx:id="btVoltar" mnemonicParsing="false" onAction="#onBtVoltarAction" text="Voltar" />
               </items>
             </ToolBar>
             <TableView fx:id="tableViewProcesso" prefHeight="207.0" prefWidth="371.0">

@@ -94,6 +94,9 @@ public class ProcessosListController implements Initializable, DataChangeListene
 
 	@FXML
 	private Button btNovo;
+	
+	@FXML
+	private Button btVoltar;
 
 	private ObservableList<Processo> obsList;
 
@@ -106,6 +109,24 @@ public class ProcessosListController implements Initializable, DataChangeListene
 		Stage parentStage = Utils.currentStage(event);
 		Processo obj = new Processo();
 		createDialogForm("/gui/ProcessoForm.fxml", obj, parentStage);
+	}
+	
+	@FXML 
+	public void onBtVoltarAction() {
+		openMenuList();
+	}
+	
+	private void openMenuList() {
+	    try {
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MenuList.fxml"));
+	        AnchorPane pane = loader.load();
+	        Scene scene = new Scene(pane);
+
+	        Stage stage = (Stage) tableViewProcesso.getScene().getWindow();
+	        stage.setScene(scene);
+	    } catch (IOException e) {
+	        e.printStackTrace(); // Trate a exceção de acordo com a sua lógica de tratamento de erros
+	    }
 	}
 
 	private void createDialogForm(String absoluteName, Processo obj, Stage parentStage) {
