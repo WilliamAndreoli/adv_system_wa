@@ -191,6 +191,33 @@ public class UsuarioJDBC implements UsuarioDao {
 			DB.closeResultSet(rs);
 		}
 	}
+	
+	@Override
+	public Usuario findByLogin(String login) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement(
+				    "SELECT usuario.* "
+				    + "FROM usuario "
+				    + "WHERE usuario.login = ?");
+			
+			st.setString(1, login);
+			rs = st.executeQuery();
+			if (rs.next()) {
+				Usuario obj = instantiateUsuario(rs);
+				return obj;
+			}
+			return null;
+		} 
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+	}
 
 	
 	

@@ -186,9 +186,28 @@ public class Processo implements Serializable {
 	public String toString() {
 		return "Processo [id=" + id + ", numero_Processo=" + numero_Processo + ", data_De_Abertura=" + data_De_Abertura
 				+ ", tipo=" + tipo + ", status=" + status_Processo + ", juiz=" + juiz + ", descricao=" + descricao
-				+ ", honorarios=" + honorarios + ", custos=" + custos + ", cliente_Id=" + cliente_Id + ", advogado_Id="
-				+ advogado_Id + ", partes=" + parte + ", tribunal=" + tribunal + ", usuario=" + usuario + "]";
+				+ ", honorarios=" + honorarios + ", custos=" + custos + ", cliente_Id=" + cliente_Id.nome + ", advogado_Id="
+				+ advogado_Id.getNome() + ", partes=" + parte.getNome() + ", tribunal=" + tribunal.getNome() + ", usuario=" + usuario.getLogin() + "]";
 	}
-	
+
+//	public void setNomeDoCliente(Cliente cliente) {
+//		this.nomeDoCliente = cliente.getNome();		
+//	}
+//	
+//	public void setNomeDoAdvogado(Advogado advogado) {
+//		this.nomeDoAdvogado = advogado.getNome();
+//	}
+//	
+//	public void setNomeDaParte(Parte_Processo parte) {
+//		this.nomeDaParte = parte.getNome();
+//	}
+//	
+//	public void setNomeDoTribunal(Tribunal tribunal) {
+//		this.nomeDoTribunal = tribunal.getNome();
+//	}
+//	
+//	public void setNomeDoUsuario(Usuario user) {
+//		this.nomeDoUsuario = user.getLogin();
+//	}
 	
 }

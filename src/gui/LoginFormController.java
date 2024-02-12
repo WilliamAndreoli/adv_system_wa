@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
 
 import application.Main;
+import authentication.Session;
 import db.DbException;
 import gui.util.Alerts;
 import gui.util.Utils;
@@ -14,15 +14,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.entities.Usuario;
 import model.services.UsuarioService;
@@ -32,6 +31,8 @@ public class LoginFormController implements Initializable {
 	private UsuarioService service;
 
 	private Usuario entity;
+	
+	private Integer user_Id_Login;
 
 	@FXML
 	private TextField txtLogin;
@@ -55,6 +56,10 @@ public class LoginFormController implements Initializable {
 	public void setUsuario(Usuario entity) {
 		this.entity = entity;
 	}
+	
+	public Integer getUser_Id_Login() {
+		return user_Id_Login;
+	}
 
 	@FXML
 	private void onBtEntrarAction(ActionEvent event) {
@@ -67,7 +72,9 @@ public class LoginFormController implements Initializable {
 		try {
 			entity = getFormData();
 			service.authenticateUser(entity);
-			System.out.println("Autenticado!");
+			Usuario userAtual = service.findByLogin(entity.getLogin());
+			
+			onLoginSucess(userAtual.getId());
 
 			loadView("/gui/MenuList.fxml", x -> {});
 
@@ -78,6 +85,11 @@ public class LoginFormController implements Initializable {
 		}
 	}
 
+	public void onLoginSucess(Integer userId) {
+		Session.setUserId(userId);
+		System.out.println("Autenticado! id = " + userId);
+	}
+	
 	private Usuario getFormData() {
 		Usuario obj = new Usuario();
 

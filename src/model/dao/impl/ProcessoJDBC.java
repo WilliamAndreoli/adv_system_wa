@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import authentication.Session;
 import db.DB;
 import db.DbException;
 import model.dao.ProcessoDao;
@@ -51,7 +52,8 @@ public class ProcessoJDBC implements ProcessoDao {
 			stmtProcesso.setInt(10, obj.getAdvogado_Id().getId());
 			stmtProcesso.setInt(11, obj.getPartes().getId());
 			stmtProcesso.setInt(12, obj.getTribunal().getId());
-			stmtProcesso.setInt(13, obj.getUsuario().getId());
+			Integer userId = Session.getUserId();
+			stmtProcesso.setInt(13, userId);
 			int affectedRows = stmtProcesso.executeUpdate();
 
 			// Recuperar o ID do processo inserido

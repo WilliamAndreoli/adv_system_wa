@@ -23,6 +23,10 @@ public class UsuarioService {
 		}
 	}
 	
+	public Usuario findByLogin(String login) {
+		return dao.findByLogin(login);
+	}
+	
 	public void authenticateUser(Usuario obj) {
 		dao.authenticateUser(obj);
 	}

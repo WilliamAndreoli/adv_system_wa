@@ -71,9 +71,10 @@ public class Tribunal implements Serializable{
 		return Objects.equals(id, other.id);
 	}
 
+	//Alterado para listar em Processos
 	@Override
 	public String toString() {
-		return "Tribunal [id=" + id + ", nome=" + nome + ", endereco=" + endereco + ", jurisdicao=" + jurisdicao + "]";
+		return nome;
 	}
 	
 	

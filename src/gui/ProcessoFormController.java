@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import authentication.Session;
 import db.DbException;
 import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
@@ -138,8 +139,10 @@ public class ProcessoFormController implements Initializable {
 		} catch (DbException e) {
 			Alerts.showAlert("Error saving object", null, e.getMessage(), AlertType.ERROR);
 		}
-
-		System.out.println("onBtSalvarAction");
+	}
+	
+	public void openForm() {
+		Integer userId = Session.getUserId();
 	}
 
 	private void notifyDataChangeListeners() {
@@ -178,7 +181,7 @@ public class ProcessoFormController implements Initializable {
 		obj.setPartes(comboBoxParte.getValue());
 		obj.setTribunal(comboBoxTribunal.getValue());
 		obj.setUsuario(obj.getUsuario());
-		return null;
+		return obj;
 	}
 
 	@FXML

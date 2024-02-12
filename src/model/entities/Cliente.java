@@ -90,10 +90,10 @@ public class Cliente implements Serializable {
 		return Objects.equals(id, other.id);
 	}
 
+	//Alterado para listar em Processos
 	@Override
 	public String toString() {
-		return "Cliente [id=" + id + ", nome=" + nome + ", email=" + email + ", telefone=" + telefone + ", endereco="
-				+ endereco + ", tipo=" + tipo +" ]";
+		return nome;
 	}
 
 	

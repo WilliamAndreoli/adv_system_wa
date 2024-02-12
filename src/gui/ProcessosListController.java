@@ -149,7 +149,7 @@ public class ProcessosListController implements Initializable, DataChangeListene
 		Utils.formatTableColumnDate(tableColumnDataAbertura, "dd/MM/yyyy");
 		tableColumnDataAbertura.setCellValueFactory(new PropertyValueFactory<>("data_De_Abertura"));
 		tableColumnTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
-		//tableColumnStatus.setCellValueFactory(new PropertyValueFactory<>("status_Processo"));
+		tableColumnStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 		tableColumnJuiz.setCellValueFactory(new PropertyValueFactory<>("juiz"));
 		tableColumnDescricao.setCellValueFactory(new PropertyValueFactory<>("descricao"));
 		tableColumnHonorarios.setCellValueFactory(new PropertyValueFactory<>("honorarios"));

@@ -61,9 +61,10 @@ public class Advogado implements Serializable {
 		return Objects.equals(id, other.id);
 	}
 
+	//Alterado para listar em Processos
 	@Override
 	public String toString() {
-		return "Advogado [id=" + id + ", nome=" + nome + ", numero_Da_Ordem=" + numero_Da_Ordem + "]";
+		return nome;
 	}
 
 }

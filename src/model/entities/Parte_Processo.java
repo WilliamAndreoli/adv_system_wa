@@ -51,9 +51,10 @@ public class Parte_Processo implements Serializable{
 		return Objects.equals(id, other.id);
 	}
 
+	//Alterado para listar em Processos
 	@Override
 	public String toString() {
-		return "Parte_Processo [id=" + id + ", nome=" + nome + "]";
+		return nome;
 	}
 	
 	

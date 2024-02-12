@@ -61,9 +61,10 @@ public class Usuario implements Serializable{
 		return Objects.equals(id, other.id) && Objects.equals(login, other.login) && Objects.equals(senha, other.senha);
 	}
 
+	//Alterado para listar em Processos
 	@Override
 	public String toString() {
-		return "Usuario [id=" + id + ", login=" + login + ", senha=" + senha + "]";
+		return login;
 	}
 	
 }
