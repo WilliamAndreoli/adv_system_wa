@@ -80,26 +80,26 @@ public class MenuListController implements Initializable {
 
 	@Override
 	public void initialize(URL uri, ResourceBundle bd) {
-		initializeNodes();
+//		initializeNodes();
 	}
 
 	private void initializeNodes() {
 		System.out.println("initializeNodes() chamado.");
 
-		Platform.runLater(() -> {
-			Scene scene = btProcessos.getScene();
-			if (scene != null) {
-				Window window = scene.getWindow();
-				if (window instanceof Stage) {
-					Stage stage = (Stage) window;
-					vBox.prefHeightProperty().bind(stage.heightProperty());
-					vBox.prefWidthProperty().bind(stage.widthProperty());
-				} else {
-					System.out.println("A janela atual não é um Stage.");
-				}
-			} else {
-				System.out.println("A cena ainda não está carregada.");
-			}
-		});
+//		Platform.runLater(() -> {
+//			Scene scene = btProcessos.getScene();
+//			if (scene != null) {
+//				Window window = scene.getWindow();
+//				if (window instanceof Stage) {
+//					Stage stage = (Stage) window;
+//					vBox.prefHeightProperty().bind(stage.heightProperty());
+//					vBox.prefWidthProperty().bind(stage.widthProperty());
+//				} else {
+//					System.out.println("A janela atual não é um Stage.");
+//				}
+//			} else {
+//				System.out.println("A cena ainda não está carregada.");
+//			}
+//		});
 	}
 }

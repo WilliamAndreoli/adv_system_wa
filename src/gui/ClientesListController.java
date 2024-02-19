@@ -74,16 +74,17 @@ public class ClientesListController implements Initializable, DataChangeListener
 	}
 	
 	private void openMenuList() {
-	    try {
-	        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MenuList.fxml"));
-	        AnchorPane pane = loader.load();
-	        Scene scene = new Scene(pane);
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MenuList.fxml"));
+			AnchorPane pane = loader.load();
+			Scene scene = new Scene(pane);
 
-	        Stage stage = (Stage) tableViewClientes.getScene().getWindow();
-	        stage.setScene(scene);
-	    } catch (IOException e) {
-	        e.printStackTrace(); // Trate a exceção de acordo com a sua lógica de tratamento de erros
-	    }
+			Stage newStage = new Stage(); // Crie uma nova instância de Stage
+			newStage.setScene(scene);
+			newStage.show();
+		} catch (IOException e) {
+			e.printStackTrace(); // Trate a exceção de acordo com a sua lógica de tratamento de erros
+		}
 	}
 
 //	private void createDialogForm(String absoluteName, Cliente obj, Stage parentStage) {

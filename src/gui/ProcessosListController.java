@@ -94,7 +94,7 @@ public class ProcessosListController implements Initializable, DataChangeListene
 
 	@FXML
 	private Button btNovo;
-	
+
 	@FXML
 	private Button btVoltar;
 
@@ -110,23 +110,24 @@ public class ProcessosListController implements Initializable, DataChangeListene
 		Processo obj = new Processo();
 		createDialogForm("/gui/ProcessoForm.fxml", obj, parentStage);
 	}
-	
-	@FXML 
+
+	@FXML
 	public void onBtVoltarAction() {
 		openMenuList();
 	}
-	
-	private void openMenuList() {
-	    try {
-	        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MenuList.fxml"));
-	        AnchorPane pane = loader.load();
-	        Scene scene = new Scene(pane);
 
-	        Stage stage = (Stage) tableViewProcesso.getScene().getWindow();
-	        stage.setScene(scene);
-	    } catch (IOException e) {
-	        e.printStackTrace(); // Trate a exceção de acordo com a sua lógica de tratamento de erros
-	    }
+	private void openMenuList() {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MenuList.fxml"));
+			AnchorPane pane = loader.load();
+			Scene scene = new Scene(pane);
+
+			Stage newStage = new Stage(); // Crie uma nova instância de Stage
+			newStage.setScene(scene);
+			newStage.show();
+		} catch (IOException e) {
+			e.printStackTrace(); // Trate a exceção de acordo com a sua lógica de tratamento de erros
+		}
 	}
 
 	private void createDialogForm(String absoluteName, Processo obj, Stage parentStage) {
@@ -139,7 +140,8 @@ public class ProcessosListController implements Initializable, DataChangeListene
 
 			ProcessoFormController controller = loader.getController();
 			controller.setProcesso(obj);
-			controller.setServices(new ProcessosService(), new ClienteService(), new AdvogadoService(), new Parte_ProcessoService(), new TribunalService());
+			controller.setServices(new ProcessosService(), new ClienteService(), new AdvogadoService(),
+					new Parte_ProcessoService(), new TribunalService());
 			controller.loadAssociatedObjects();
 			controller.subscribeDataChangeListener(this);
 			controller.updateFormData();
