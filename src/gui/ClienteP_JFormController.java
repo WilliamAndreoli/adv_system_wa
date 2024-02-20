@@ -20,20 +20,19 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.entities.Cliente;
-import model.entities.Pessoa_Fisica;
+import model.entities.Pessoa_Juridica;
 import model.exceptions.ValidationException;
-import model.services.Pessoa_FisicaService;
+import model.services.Pessoa_JuridicaService;
 
-public class ClienteP_FFormController implements Initializable {
+public class ClienteP_JFormController implements Initializable {
 
-	private Pessoa_FisicaService service;
+	private Pessoa_JuridicaService service;
 
-	private Pessoa_Fisica entity;
+	private Pessoa_Juridica entity;
 
 	private Cliente cliente;
 
@@ -49,25 +48,10 @@ public class ClienteP_FFormController implements Initializable {
 	private TextField txtTelefone;
 
 	@FXML
-	private TextField txtTipo;
+	private TextField txtNome_Fantasia;
 
 	@FXML
-	private TextField txtCpf;
-
-	@FXML
-	private TextField txtRg;
-
-	@FXML
-	private TextField txtCertidao_Casamento;
-
-	@FXML
-	private TextField txtCtps;
-
-	@FXML
-	private TextField txtCnh;
-
-	@FXML
-	private DatePicker dpData_Nascimento;
+	private TextField txtCnpj;
 
 	@FXML
 	private Button btSalvar;
@@ -78,11 +62,11 @@ public class ClienteP_FFormController implements Initializable {
 	@FXML
 	private Label labelError;
 
-	public void setPessoa_FisicaService(Pessoa_FisicaService service) {
+	public void setPessoa_JuridicaService(Pessoa_JuridicaService service) {
 		this.service = service;
 	}
 
-	public void setPessoa_Fisica(Pessoa_Fisica entity) {
+	public void setPessoa_Juridica(Pessoa_Juridica entity) {
 		this.entity = entity;
 	}
 
@@ -93,7 +77,7 @@ public class ClienteP_FFormController implements Initializable {
 	@FXML
 	private void onBtSalvarAction(ActionEvent event) {
 		if (entity == null) {
-			throw new IllegalStateException("Entity Pessoa_Fisica was null");
+			throw new IllegalStateException("Entity Pessoa_Juridica was null");
 		}
 		if (cliente == null) {
 			throw new IllegalStateException("Entity Cliente was null");
@@ -108,7 +92,7 @@ public class ClienteP_FFormController implements Initializable {
 			service.saveOrUpdate(entity, cliente);
 			
 			if (entity != null) {
-				Alerts.showAlert("Registrado!", null, "Cliente pessoa física salvo com sucesso!", AlertType.CONFIRMATION);
+				Alerts.showAlert("Registrado!", null, "Cliente pessoa jurídica salvo com sucesso!", AlertType.CONFIRMATION);
 			}
 			
 			notifyDataChangeListeners();
@@ -131,32 +115,22 @@ public class ClienteP_FFormController implements Initializable {
 
 	}
 
-	private Pessoa_Fisica getFormP_FData() {
-		Pessoa_Fisica obj = new Pessoa_Fisica();
+	private Pessoa_Juridica getFormP_FData() {
+		Pessoa_Juridica obj = new Pessoa_Juridica();
 
 		ValidationException exception = new ValidationException("Validation error");
 
-		if (txtCpf.getText() == null || txtCpf.getText().trim().equals("")) {
+		if (txtCnpj.getText() == null || txtCnpj.getText().trim().equals("")) {
 			exception.addError("cpf", "field can't be empty");
 		}
 
-		if (txtRg.getText() == null || txtRg.getText().trim().equals("")) {
+		if (txtNome_Fantasia.getText() == null || txtNome_Fantasia.getText().trim().equals("")) {
 			exception.addError("rg", "field can't be empty");
 		}
 
-		obj.setCpf(txtCpf.getText());
-		obj.setRg(txtRg.getText());
-		obj.setCertidao_Casamento(txtCertidao_Casamento.getText());
-		obj.setCtps(txtCtps.getText());
-		obj.setCnh(txtCnh.getText());
+		obj.setCnpj(txtCnpj.getText());
+		obj.setNome_Fantasia(txtNome_Fantasia.getText());
 		
-		if (dpData_Nascimento.getValue() == null) {
-			exception.addError("data_nascimento", "field can't be empty");
-		} else {
-			Instant instant = Instant.from(dpData_Nascimento.getValue().atStartOfDay(ZoneId.systemDefault()));
-			obj.setData_Nascimento(Date.from(instant));
-		}
-
 		return obj;
 	}
 	
@@ -181,20 +155,9 @@ public class ClienteP_FFormController implements Initializable {
 		txtNome.setText(cliente.getNome());
 		txtEmail.setText(cliente.getEmail());
 		txtTelefone.setText(cliente.getTelefone());
-		txtTipo.setText(cliente.getTipo());
 
-		txtCpf.setText(entity.getCpf());
-		txtRg.setText(entity.getRg());
-		txtCertidao_Casamento.setText(entity.getCertidao_Casamento());
-		txtCtps.setText(entity.getCtps());
-		txtCnh.setText(entity.getCnh());
-
-		Locale.setDefault(Locale.US);
-		if (entity.getData_nascimento() != null) {
-			dpData_Nascimento
-					.setValue(LocalDate.ofInstant(entity.getData_nascimento().toInstant(), ZoneId.systemDefault()));
-		}
-
+		txtCnpj.setText(entity.getCnpj());
+		txtNome_Fantasia.setText(entity.getNome_Fantasia());
 	}
 	
 	public void subscribeDataChangeListener(DataChangeListener listener) {
@@ -210,11 +173,8 @@ public class ClienteP_FFormController implements Initializable {
 		Constraints.setTextFieldMaxLength(txtNome, 80);
 		Constraints.setTextFieldMaxLength(txtEmail, 80);
 		Constraints.setTextFieldMaxLength(txtTelefone, 50);
-		Constraints.setTextFieldMaxLength(txtCpf, 11);
-		Constraints.setTextFieldMaxLength(txtRg, 25);
-		Constraints.setTextFieldMaxLength(txtCertidao_Casamento, 20);
-		Constraints.setTextFieldMaxLength(txtCtps, 11);
-		Constraints.setTextFieldMaxLength(txtCnh, 11);
+		Constraints.setTextFieldMaxLength(txtCnpj, 14);
+		Constraints.setTextFieldMaxLength(txtNome_Fantasia, 80);
 	}
 
 }

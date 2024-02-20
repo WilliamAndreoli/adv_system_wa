@@ -37,6 +37,11 @@
                   <Insets left="10.0" top="5.0" />
                </VBox.margin>
             </Button>
+            <Button fx:id="btVoltar" mnemonicParsing="false" onAction="#onBtVoltarAction" text="Voltar">
+               <VBox.margin>
+                  <Insets left="230.0" top="140.0" />
+               </VBox.margin>
+            </Button>
          </children>
       </VBox>
    </children>
