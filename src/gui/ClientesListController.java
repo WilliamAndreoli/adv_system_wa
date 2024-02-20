@@ -6,19 +6,24 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import gui.listeners.DataChangeListener;
+import gui.util.Alerts;
+import gui.util.Utils;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import model.entities.Cliente;
@@ -61,12 +66,10 @@ public class ClientesListController implements Initializable, DataChangeListener
 		this.service = service;
 	}
 
-//	@FXML
-//	public void obBtNovoAction(ActionEvent event) {
-//		Stage parentStage = Utils.currentStage(event);
-//		Cliente obj = new Cliente();
-//		createDialogForm("/gui/ClienteForm.fxml", obj, parentStage);
-//	}
+	@FXML
+	public void obBtNovoAction() {
+		openMenuClienteList();
+	}
 	
 	@FXML 
 	public void onBtVoltarAction() {
@@ -86,8 +89,22 @@ public class ClientesListController implements Initializable, DataChangeListener
 			e.printStackTrace(); // Trate a exceção de acordo com a sua lógica de tratamento de erros
 		}
 	}
+	
+	private void openMenuClienteList() {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MenuClienteList.fxml"));
+			AnchorPane pane = loader.load();
+			Scene scene = new Scene(pane);
 
-//	private void createDialogForm(String absoluteName, Cliente obj, Stage parentStage) {
+			Stage newStage = new Stage(); // Crie uma nova instância de Stage
+			newStage.setScene(scene);
+			newStage.show();
+		} catch (IOException e) {
+			e.printStackTrace(); // Trate a exceção de acordo com a sua lógica de tratamento de erros
+		}
+	}
+
+//	private void createDialogForm(String absoluteName, Stage parentStage) {
 //		try {
 //			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 //			AnchorPane pane = loader.load();
@@ -103,7 +120,7 @@ public class ClientesListController implements Initializable, DataChangeListener
 //			controller.updateFormData();
 //
 //			Stage dialogStage = new Stage();
-//			dialogStage.setTitle("Enter Cliente Data");
+//			dialogStage.setTitle("Select Type Cliente");
 //			dialogStage.setScene(cena);
 //			dialogStage.setResizable(false);
 //			dialogStage.initOwner(parentStage);

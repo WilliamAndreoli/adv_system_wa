@@ -14,7 +14,7 @@
    <children>
       <VBox fx:id="vBox" layoutY="-1.0" prefHeight="666.0" prefWidth="1114.0">
          <children>
-            <Label text="Processos">
+            <Label text="Clientes">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -24,7 +24,7 @@
             </Label>
             <ToolBar prefHeight="40.0" prefWidth="200.0">
               <items>
-                <Button fx:id="btNovo" mnemonicParsing="false" text="Novo" />
+                <Button fx:id="btNovo" mnemonicParsing="false" onAction="#obBtNovoAction" text="Novo" />
                   <Button fx:id="btVoltar" mnemonicParsing="false" onAction="#onBtVoltarAction" text="Voltar" />
               </items>
             </ToolBar>
