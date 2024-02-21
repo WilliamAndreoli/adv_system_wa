@@ -44,6 +44,32 @@ public class ClienteJDBC implements ClienteDao {
 
 	}
 
+	@Override
+	public List<Cliente> findByNome(String nome) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement("SELECT cliente.* " + "FROM cliente " + "WHERE cliente.nome = ?");
+
+			st.setString(1, nome);
+			rs = st.executeQuery();
+
+			List<Cliente> list = new ArrayList<>();
+
+			while (rs.next()) {
+				Cliente obj = instantiateCliente(rs);
+				list.add(obj);
+			}
+			return list;
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+
+	}
+
 	private Cliente instantiateCliente(ResultSet rs) throws SQLException {
 		Cliente cliente = new Cliente();
 		cliente.setId(rs.getInt("id"));
@@ -60,10 +86,7 @@ public class ClienteJDBC implements ClienteDao {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
-			st = conn.prepareStatement(
-					"SELECT cliente.* "
-							+ "FROM cliente "
-							+ "ORDER BY nome");
+			st = conn.prepareStatement("SELECT cliente.* " + "FROM cliente " + "ORDER BY nome");
 
 			rs = st.executeQuery();
 

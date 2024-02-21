@@ -10,4 +10,5 @@ public interface ClienteDao {
 
 	List<Cliente> findAll();
 	
+	List<Cliente> findByNome(String nome);
 }

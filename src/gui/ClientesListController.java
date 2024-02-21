@@ -6,24 +6,20 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import gui.listeners.DataChangeListener;
-import gui.util.Alerts;
-import gui.util.Utils;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import model.entities.Cliente;
@@ -44,19 +40,22 @@ public class ClientesListController implements Initializable, DataChangeListener
 
 	@FXML
 	private TableColumn<Cliente, String> tableColumnNome;
-	
+
 	@FXML
 	private TableColumn<Cliente, String> tableColumnEmail;
-	
+
 	@FXML
 	private TableColumn<Cliente, String> tableColumnTelefone;
-	
+
 	@FXML
 	private TableColumn<Cliente, String> tableColumnTipo;
+	
+	@FXML
+	private TextField textFieldPesquisa;
 
 	@FXML
 	private Button btNovo;
-	
+
 	@FXML
 	private Button btVoltar;
 
@@ -70,12 +69,12 @@ public class ClientesListController implements Initializable, DataChangeListener
 	public void obBtNovoAction() {
 		openMenuClienteList();
 	}
-	
-	@FXML 
+
+	@FXML
 	public void onBtVoltarAction() {
 		openMenuList();
 	}
-	
+
 	private void openMenuList() {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MenuList.fxml"));
@@ -89,7 +88,7 @@ public class ClientesListController implements Initializable, DataChangeListener
 			e.printStackTrace(); // Trate a exceção de acordo com a sua lógica de tratamento de erros
 		}
 	}
-	
+
 	private void openMenuClienteList() {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MenuClienteList.fxml"));
@@ -103,34 +102,20 @@ public class ClientesListController implements Initializable, DataChangeListener
 			e.printStackTrace(); // Trate a exceção de acordo com a sua lógica de tratamento de erros
 		}
 	}
-
-//	private void createDialogForm(String absoluteName, Stage parentStage) {
-//		try {
-//			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
-//			AnchorPane pane = loader.load();
-//
-//			// Criar uma nova cena e definir o pane como sua raiz
-//			Scene cena = new Scene(pane);
-//
-//			ClienteFormController controller = loader.getController();
-//			controller.setCliente(obj);
-//			controller.setServices(new ClienteService());
-//			controller.loadAssociatedObjects();
-//			controller.subscribeDataChangeListener(this);
-//			controller.updateFormData();
-//
-//			Stage dialogStage = new Stage();
-//			dialogStage.setTitle("Select Type Cliente");
-//			dialogStage.setScene(cena);
-//			dialogStage.setResizable(false);
-//			dialogStage.initOwner(parentStage);
-//			dialogStage.initModality(Modality.WINDOW_MODAL);
-//			dialogStage.showAndWait();
-//		} catch (IOException e) {
-//			// Lidar com a exceção
-//			Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
-//		}
-//	}
+	
+	private void pesquisarCliente(String nome) {
+	    if (service == null) {
+	        throw new IllegalStateException("Service was null");
+	    }
+	    List<Cliente> list;
+	    if (nome == null || nome.isEmpty()) {
+	        list = service.findAll(); // Se a pesquisa estiver vazia, exiba todos os clientes
+	    } else {
+	        list = service.findByNome(nome); // Implemente este método em seu serviço para buscar clientes pelo nome
+	    }
+	    obsList = FXCollections.observableArrayList(list);
+	    tableViewClientes.setItems(obsList);
+	}
 
 	@Override
 	public void initialize(URL uri, ResourceBundle bd) {
@@ -145,7 +130,6 @@ public class ClientesListController implements Initializable, DataChangeListener
 		tableColumnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
 		tableColumnTelefone.setCellValueFactory(new PropertyValueFactory<>("telefone"));
 		tableColumnTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
-		
 
 		Platform.runLater(() -> {
 			Scene scene = tableViewClientes.getScene();
@@ -164,15 +148,17 @@ public class ClientesListController implements Initializable, DataChangeListener
 				System.out.println("A cena ainda não está carregada.");
 			}
 		});
+		
+		textFieldPesquisa.textProperty().addListener((observable, oldValue, newValue) -> {
+	        pesquisarCliente(newValue);
+	    });
 	}
 
 	public void updateTableView() {
 		if (service == null) {
 			throw new IllegalStateException("Service was null");
 		}
-		List<Cliente> list = service.findAll();
-		obsList = FXCollections.observableArrayList(list);
-		tableViewClientes.setItems(obsList);
+		pesquisarCliente(textFieldPesquisa.getText()); // Atualize a tabela considerando o filtro de pesquisa atual
 	}
 
 	@Override

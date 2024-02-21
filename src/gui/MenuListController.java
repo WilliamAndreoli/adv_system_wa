@@ -7,7 +7,6 @@ import java.util.function.Consumer;
 
 import application.Main;
 import gui.util.Alerts;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,8 +16,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 import model.services.ClienteService;
 import model.services.ProcessosService;
 
@@ -80,26 +77,10 @@ public class MenuListController implements Initializable {
 
 	@Override
 	public void initialize(URL uri, ResourceBundle bd) {
-//		initializeNodes();
+		
 	}
 
 	private void initializeNodes() {
-		System.out.println("initializeNodes() chamado.");
-
-//		Platform.runLater(() -> {
-//			Scene scene = btProcessos.getScene();
-//			if (scene != null) {
-//				Window window = scene.getWindow();
-//				if (window instanceof Stage) {
-//					Stage stage = (Stage) window;
-//					vBox.prefHeightProperty().bind(stage.heightProperty());
-//					vBox.prefWidthProperty().bind(stage.widthProperty());
-//				} else {
-//					System.out.println("A janela atual não é um Stage.");
-//				}
-//			} else {
-//				System.out.println("A cena ainda não está carregada.");
-//			}
-//		});
+		
 	}
 }
