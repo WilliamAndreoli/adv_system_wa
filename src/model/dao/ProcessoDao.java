@@ -11,5 +11,6 @@ public interface ProcessoDao {
 	void deletebyId(Integer id);
 	Processo findById(Integer id);
 	List<Processo> findAll();
+	List<Processo> findByNumero(String numero_Processo);
 	
 }

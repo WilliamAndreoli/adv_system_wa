@@ -22,5 +22,9 @@ public class ProcessosService {
 			dao.update(obj);
 		}
 	}
+
+	public List<Processo> findByNumero(String numero_Processo) {
+		return dao.findByNumero(numero_Processo);
+	}
 	
 }

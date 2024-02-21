@@ -205,6 +205,75 @@ public class ProcessoJDBC implements ProcessoDao {
 		}
 	}
 
+	@Override
+	public List<Processo> findByNumero(String numero_Processo) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement(
+					"SELECT processo.*, cliente.nome as Nome_Do_Cliente, advogado.nome as Nome_Do_Advogado, "
+							+ "parte_processo.nome as Nome_Da_Parte, tribunal.nome as Tribunal, usuario.login as Usuário "
+							+ "FROM processo " + "INNER JOIN cliente ON processo.cliente_Id = cliente.id "
+							+ "INNER JOIN advogado ON processo.advogado_Id = advogado.id "
+							+ "INNER JOIN parte_processo ON processo.partes = parte_processo.id "
+							+ "INNER JOIN tribunal ON processo.tribunal = tribunal.id "
+							+ "INNER JOIN usuario ON processo.usuario = usuario.id " + "WHERE processo.numero_Processo = ?");
+
+			st.setString(1, numero_Processo);
+			rs = st.executeQuery();
+
+			List<Processo> list = new ArrayList<>();
+			Map<Integer, Cliente> mapCli = new HashMap<>();
+			Map<Integer, Advogado> mapAdv = new HashMap<>();
+			Map<Integer, Parte_Processo> mapPar = new HashMap<>();
+			Map<Integer, Tribunal> mapTri = new HashMap<>();
+			Map<Integer, Usuario> mapUser = new HashMap<>();
+
+			while (rs.next()) {
+
+				Cliente cliente = mapCli.get(rs.getInt("cliente_Id"));
+				Advogado advogado = mapAdv.get(rs.getInt("advogado_Id"));
+				Parte_Processo partes = mapPar.get(rs.getInt("partes"));
+				Tribunal tribunal = mapTri.get(rs.getInt("tribunal"));
+				Usuario usuario = mapUser.get(rs.getInt("usuario"));
+
+				if (cliente == null) {
+					cliente = instantiateCliente(rs);
+					mapCli.put(rs.getInt("cliente_Id"), cliente);
+				}
+
+				if (advogado == null) {
+					advogado = instantiateAdvogado(rs);
+					mapAdv.put(rs.getInt("advogado_Id"), advogado);
+				}
+
+				if (partes == null) {
+					partes = instantiatePartes(rs);
+					mapPar.put(rs.getInt("partes"), partes);
+				}
+
+				if (tribunal == null) {
+					tribunal = instantiateTribunal(rs);
+					mapTri.put(rs.getInt("tribunal"), tribunal);
+				}
+
+				if (usuario == null) {
+					usuario = instantiateUsuario(rs);
+					mapUser.put(rs.getInt("usuario"), usuario);
+				}
+
+				Processo obj = instantiateProcesso(rs, cliente, advogado, partes, tribunal, usuario);
+				list.add(obj);
+			}
+			return list;
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+	}
+	
 	private Processo instantiateProcesso(ResultSet rs, Cliente cliente, Advogado advogado, Parte_Processo parte,
 			Tribunal tribunal, Usuario usuario) throws SQLException {
 		Processo obj = new Processo();

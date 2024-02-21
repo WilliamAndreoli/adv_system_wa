@@ -21,6 +21,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -91,6 +92,9 @@ public class ProcessosListController implements Initializable, DataChangeListene
 
 	@FXML
 	private TableColumn<Processo, Usuario> tableColumnUsuario;
+	
+	@FXML
+	private TextField textFieldPesquisa;
 
 	@FXML
 	private Button btNovo;
@@ -202,15 +206,29 @@ public class ProcessosListController implements Initializable, DataChangeListene
 				System.out.println("A cena ainda não está carregada.");
 			}
 		});
+		
+		textFieldPesquisa.textProperty().addListener((observable, oldValue, newValue) -> {
+	        pesquisarProcesso(newValue);
+	    });
+		
+	}
+	
+	private void pesquisarProcesso(String numero_Processo) {
+	    if (service == null) {
+	        throw new IllegalStateException("Service was null");
+	    }
+	    List<Processo> list;
+	    if (numero_Processo == null || numero_Processo.isEmpty()) {
+	        list = service.findAll(); // Se a pesquisa estiver vazia, exiba todos os clientes
+	    } else {
+	        list = service.findByNumero(numero_Processo); // Implemente este método em seu serviço para buscar clientes pelo nome
+	    }
+	    obsList = FXCollections.observableArrayList(list);
+	    tableViewProcesso.setItems(obsList);
 	}
 
 	public void updateTableView() {
-		if (service == null) {
-			throw new IllegalStateException("Service was null");
-		}
-		List<Processo> list = service.findAll();
-		obsList = FXCollections.observableArrayList(list);
-		tableViewProcesso.setItems(obsList);
+		pesquisarProcesso(textFieldPesquisa.getText());
 	}
 
 	@Override
